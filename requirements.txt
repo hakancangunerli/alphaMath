@@ -1,2 +1,4 @@
 openai==0.28
 ollama
+PyYAML
+groq

@@ -1,5 +1,5 @@
 """
-Calling LLM APIs 
+Calling LLM APIs
 
 LLMs available:
 - Groq: llama3-70b-8192, llama3-8b-8192, llama2-70b-4096, mixtral-8x7b-32768, gemma-7b-it
@@ -20,16 +20,7 @@ TODO: add other parameters (e.g., temperature)
 import yaml
 import openai
 from groq import Groq
-
-LLMS_FROM_GROQ = [
-    "llama3-70b-8192",
-    "llama3-8b-8192",
-    "llama2-70b-4096",
-    "mixtral-8x7b-32768",
-    "gemma-7b-it",
-]
-LLMS_FROM_OPENAI = ["gpt-3.5-turbo", "gpt-4-turbo"]
-LLMS = LLMS_FROM_GROQ + LLMS_FROM_OPENAI
+from constants import LLMS, LLMS_FROM_OPENAI
 
 # set-up api keys from the config file
 with open("config.yaml") as f:
@@ -38,12 +29,29 @@ openai.api_key = cfg["api_key"]["openai"]
 groq_client = Groq(api_key=cfg["api_key"]["groq"])
 
 
+class LLMCLients:
+    _instance = None
+
+    def __new__(cls):
+        # Singleton pattern, sets up api keys only once
+        if cls._instance is None:
+            with open("config.yaml") as f:
+                cfg = yaml.safe_load(f)
+            openai.api_key = cfg["api_key"]["openai"]
+            cls.groq_client = Groq(api_key=cfg["api_key"]["groq"])
+        return cls._instance
+
+
 def call_llm_api(
     model: str,
     system_query: str = "",
     user_query: str = "",
 ):
     assert model in LLMS, f"LLM must be one of {LLMS}"
+
+    # set up clients and api keys
+    LLMCLients()
+
     if model in LLMS_FROM_OPENAI:
         return (
             openai.ChatCompletion.create(
@@ -58,7 +66,7 @@ def call_llm_api(
         )
     else:
         return (
-            groq_client.chat.completions.create(
+            LLMCLients.groq_client.chat.completions.create(
                 model=model,
                 messages=[
                     {"role": "system", "content": system_query},
@@ -68,12 +76,3 @@ def call_llm_api(
             .choices[0]
             .message.content
         )
-
-if __name__ == "__main__":
-    print(
-        call_llm_api(
-            model='llama3-70b-8192',
-            system_query="Hi! I am a student who is trying to solve a math problem. Can you help me?",
-            user_query="Let $\\mathbf{a} = \\begin{pmatrix} -3 \\\\ 10 \\\\ 1 \\end{pmatrix},$ $\\mathbf{b} = \\begin{pmatrix} 5 \\\\ \\pi \\\\ 0 \\end{pmatrix},$ and $\\mathbf{c} = \\begin{pmatrix} -2 \\\\ -2 \\\\ 7 \\end{pmatrix}.$  Compute\n\\[(\\mathbf{a} - \\mathbf{b}) \\cdot [(\\mathbf{b} - \\mathbf{c}) \\times (\\mathbf{c} - \\mathbf{a})].\\]",
-        )
-    )

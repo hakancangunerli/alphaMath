@@ -83,13 +83,3 @@ Here are some examples:
         return False
     else:
         raise ValueError("Invalid response from the LLM")
-
-
-if __name__ == "__main__":
-    is_correct = judge_correctness(
-        prob="Find the phase shift of the graph of $y = 2 \\sin \\left( 2x + \\frac{\\pi}{3} \\right).$",
-        sol="Since the graph of $y = 2 \\sin \\left( 2x + \\frac{\\pi}{3} \\right)$ is the same as the graph of $y = 2 \\sin 2x$ shifted $\\frac{\\pi}{6}$ units to the left, the phase shift is $\\boxed{-\\frac{\\pi}{6}}.$\n\n[asy]import TrigMacros;\n\nsize(400);\n\nreal g(real x)\n{\n\treturn 2*sin(2*x + pi/3);\n}\n\nreal f(real x)\n{\n\treturn 2*sin(2*x);\n}\n\ndraw(graph(g,-2*pi,2*pi,n=700,join=operator ..),red);\ndraw(graph(f,-2*pi,2*pi,n=700,join=operator ..));\ntrig_axes(-2*pi,2*pi,-3,3,pi/2,1);\nlayer();\nrm_trig_labels(-4,4, 2);\n[/asy]",
-        ans="$-pi/6$",
-        llm="llama3-70b-8192",
-    )
-    print(is_correct)
