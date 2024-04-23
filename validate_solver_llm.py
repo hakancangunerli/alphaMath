@@ -1,9 +1,5 @@
-import json
-import os
-import random
-from solver import llm_solver
 from judge_correctness import judge_correctness
-from constants import DEFAULT_JUDGE_LLM, ALL_PROBLEM_CLASSES
+from constants import ALL_PROBLEM_CLASSES
 import re
 
 pattern = re.compile(r"\[asy\].*?\[/asy\]", re.DOTALL)
@@ -60,7 +56,15 @@ def validate_solver_llm(
         prob_num[level - 1] += 1
         prob = dataset[i]["problem"]
         sol = remove_asy_tags(dataset[i]["solution"])
-        ans = solver(prob, data_class, solver_llm)
+        ans = solver(prob, data_class, solver_llm, test_mode=test_mode)
+
+        if not ans:
+            print(
+                f"Error in solving problem {dataset[i]['filename']}. Will retry later."
+            )
+            retry_files.append(i)
+            prob_num[level - 1] -= 1
+            continue
 
         try:
             is_correct = judge_correctness(prob, sol, ans, llm=judging_llm)

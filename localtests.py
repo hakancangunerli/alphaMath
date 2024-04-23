@@ -57,6 +57,18 @@ class LocalTests(unittest.TestCase):
         self.assertTrue(resp)
         self.assertIsInstance(resp, str)
 
+    def test_llm_coder(self):
+        from solver import llm_coder
+
+        resp = llm_coder(
+            problem="What is the solution to the equation $x^2-4=0$?",
+            data_class="algebra",
+            coder_llm="codegemma",
+        )
+        # check if the response is not empty and returns a string
+        self.assertTrue(resp)
+        self.assertIsInstance(resp, str)
+
     def test_judge_correctness(self):
         from judge_correctness import judge_correctness
 

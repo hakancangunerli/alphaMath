@@ -19,8 +19,9 @@ TODO: add other parameters (e.g., temperature)
 
 import yaml
 import openai
+import ollama
 from groq import Groq
-from constants import LLMS, LLMS_FROM_OPENAI
+from constants import LLMS, CODE_LLMS, LLMS_FROM_OPENAI
 
 # set-up api keys from the config file
 with open("config.yaml") as f:
@@ -64,6 +65,16 @@ def call_llm_api(
             .choices[0]
             .message["content"]
         )
+
+    elif model in CODE_LLMS:
+        return ollama.chat(
+            model=model,
+            messages=[
+                {"role": "system", "content": system_query},
+                {"role": "user", "content": user_query},
+            ],
+        )["message"]["content"]
+
     else:
         return (
             LLMCLients.groq_client.chat.completions.create(
