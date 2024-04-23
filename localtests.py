@@ -19,7 +19,7 @@ class LocalTests(unittest.TestCase):
             self.assertIsInstance(resp, str)
 
     def test_validate_solver_llm(self):
-        from validate_solver_llm import validate_solver_llm
+        from validate_llms import validate_solver_llm
         from solver import llm_solver
         from constants import DEFAULT_JUDGE_LLM, DEFAULT_SOLVER_LLM
 
