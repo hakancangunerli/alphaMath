@@ -1,11 +1,13 @@
 from call_apis import *
 
 
-def llm_solver(problem: str, data_class, solver_llm):
+def llm_solver(problem: str, data_class: str, solver_llm: str, hint: str = None):
     """
     parameters:
     - problem: the problem to solve
-    - llm: the language model to use.
+    - data_class: the class of the problem, must be in ["algebra","counting_and_probability", "geometry", "intermediate_algebra", "number_theory", "prealgebra", "precalculus"]
+    - solver_llm: the llm used to solve the problem
+    - hint: the hint (obtained from RAG / code / ...) to solve the problem, default None
 
     TODO: add other parameters (e.g., temperature)
 
@@ -18,6 +20,11 @@ def llm_solver(problem: str, data_class, solver_llm):
     user_query = (
         f"""Here is the problem you need to solve:\n\n```\n{problem}\n```\n\n"""
     )
+
+    if hint is not None:
+        user_query += (
+            f"""Let me give you some possibly useful hints:\n```{hint}```\n\n"""
+        )
 
     return call_llm_api(
         model=solver_llm, system_query=instruct_query, user_query=user_query
