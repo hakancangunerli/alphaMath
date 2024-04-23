@@ -3,7 +3,7 @@ import os
 import random
 from solver import llm_solver
 from judge_correctness import judge_correctness
-from constants import DEFAULT_JUDGE_LLM
+from constants import DEFAULT_JUDGE_LLM, ALL_PROBLEM_CLASSES
 import re
 
 pattern = re.compile(r"\[asy\].*?\[/asy\]", re.DOTALL)
@@ -37,15 +37,7 @@ def validate_solver_llm(
     return:
     a list of the accuracy at all levels, whose first position is dummy. e.g., [0,0.9,0.8,0.7,0.6,0.5]
     """
-    assert data_class in [
-        "algebra",
-        "counting_and_probability",
-        "geometry",
-        "intermediate_algebra",
-        "number_theory",
-        "prealgebra",
-        "precalculus",
-    ], "Invalid data class"
+    assert data_class in ALL_PROBLEM_CLASSES, "Invalid data class"
     assert all(
         [level in [1, 2, 3, 4, 5] for level in levels]
     ), "Levels must be in 1 to 5"

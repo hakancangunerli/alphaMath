@@ -9,3 +9,12 @@ LLMS_FROM_OPENAI = ["gpt-3.5-turbo", "gpt-4-turbo"]
 LLMS = LLMS_FROM_GROQ + LLMS_FROM_OPENAI
 DEFAULT_JUDGE_LLM = "gpt-3.5-turbo"
 DEFAULT_SOLVER_LLM = "llama3-70b-8192"
+ALL_PROBLEM_CLASSES = [
+    "algebra",
+    "counting_and_probability",
+    "geometry",
+    "intermediate_algebra",
+    "number_theory",
+    "prealgebra",
+    "precalculus",
+]
