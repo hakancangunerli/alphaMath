@@ -6,11 +6,13 @@ LLMs available:
 - OpenAI: gpt-3.5-turbo, gpt-4-turbo
 
 Usage:
-- call_llm_api(model, system_query, user_query)
+- call_llm_api(model, system_query, user_query, time_interval=1)
     Parameters:
     - model: the LLM to call
     - system_query: the system query
     - user_query: the user query
+    - time_interval: do not call APIs twice within time_interval seconds (for openai and groq only. For ollama, it is not necessary to set this parameter.)
+    
     Return:
     - the response (a string) from the LLM
 
@@ -22,6 +24,7 @@ import openai
 import ollama
 from groq import Groq
 from constants import LLMS, CODE_LLMS, LLMS_FROM_OPENAI
+import time
 
 # set-up api keys from the config file
 with open("config.yaml") as f:
@@ -47,6 +50,7 @@ def call_llm_api(
     model: str,
     system_query: str = "",
     user_query: str = "",
+    time_interval:float=1,
 ):
     assert model in LLMS, f"LLM must be one of {LLMS}"
 
@@ -54,7 +58,8 @@ def call_llm_api(
     LLMCLients()
 
     if model in LLMS_FROM_OPENAI:
-        return (
+        t= time.time()
+        res=(
             openai.ChatCompletion.create(
                 model=model,
                 messages=[
@@ -65,6 +70,10 @@ def call_llm_api(
             .choices[0]
             .message["content"]
         )
+        if time.time()-t<time_interval:
+            time.sleep(time_interval-time.time()+t)
+        return res
+        
 
     elif model in CODE_LLMS:
         return ollama.chat(
@@ -76,7 +85,8 @@ def call_llm_api(
         )["message"]["content"]
 
     else:
-        return (
+        t= time.time()
+        res= (
             LLMCLients.groq_client.chat.completions.create(
                 model=model,
                 messages=[
@@ -87,3 +97,6 @@ def call_llm_api(
             .choices[0]
             .message.content
         )
+        if time.time()-t<time_interval:
+            time.sleep(time_interval-time.time()+t)
+        return res

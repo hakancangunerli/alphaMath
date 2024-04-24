@@ -20,7 +20,7 @@ class LocalTests(unittest.TestCase):
 
     def test_validate_solver_llm(self):
         from validate_llms import validate_solver_llm
-        from solver import llm_solver
+        from solver import solve_problem
         from constants import DEFAULT_JUDGE_LLM, DEFAULT_SOLVER_LLM
 
         dataset_path = os.path.join(
@@ -30,7 +30,7 @@ class LocalTests(unittest.TestCase):
             dataset = json.load(f)
         subsampled_dataset = random.sample(dataset, 2)
         resp = validate_solver_llm(
-            solver=llm_solver,
+            solve_method=solve_problem,
             data_class="algebra",
             dataset=subsampled_dataset,
             levels=[1, 2, 3, 4, 5],
@@ -46,9 +46,9 @@ class LocalTests(unittest.TestCase):
             self.assertTrue(0 <= i <= 1)
 
     def test_llm_solver(self):
-        from solver import llm_solver
+        from solver import solve_problem
 
-        resp = llm_solver(
+        resp = solve_problem(
             problem="What is the solution to the equation $x^2-4=0$?",
             data_class="algebra",
             solver_llm="llama3-70b-8192",
@@ -58,12 +58,12 @@ class LocalTests(unittest.TestCase):
         self.assertIsInstance(resp, str)
 
     def test_llm_coder(self):
-        from solver import llm_coder
+        from solver import solve_problem_by_coding
 
-        resp = llm_coder(
+        resp = solve_problem_by_coding(
             problem="What is the solution to the equation $x^2-4=0$?",
             data_class="algebra",
-            coder_llm="codegemma",
+            solver_llm="codegemma",
         )
         # check if the response is not empty and returns a string
         self.assertTrue(resp)

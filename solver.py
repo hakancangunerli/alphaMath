@@ -5,7 +5,7 @@ from call_apis import *
 
 
 def remove_python_header(code_output):
-    # Remove any line that only contains 'python'
+    """Remove any line that only contains 'python'"""
     code_output = re.sub(
         r"^python\s*$", "", code_output, flags=re.IGNORECASE | re.MULTILINE
     )
@@ -13,18 +13,28 @@ def remove_python_header(code_output):
 
 
 def exec_capture_stdout(code):
-    # Function to execute code and capture stdout
+    """
+    Function to execute code and capture stdout
+    Input: code
+    Output: 
+        (True, stdout) if the code executes successfully,
+        (False, error message) if otherwise
+    """
     captured_output = io.StringIO()
 
     # Save the current stdout so we can restore it later
     original_stdout = sys.stdout
     sys.stdout = captured_output
-    exec(code)
-    sys.stdout = original_stdout
-    return captured_output.getvalue()
+    try:
+        exec(code)
+        sys.stdout = original_stdout
+        return True, captured_output.getvalue()
+    except Exception as e:
+        sys.stdout = original_stdout
+        return False, e
 
 
-def llm_solver(
+def solve_problem(
     problem: str, data_class: str, solver_llm: str, hint: str = None, test_mode=False
 ):
     """
@@ -59,53 +69,63 @@ def llm_solver(
     )
 
 
-def llm_coder(problem: str, data_class, coder_llm, test_mode=False):
+def solve_problem_by_coding(
+    problem: str,
+    data_class: str,
+    solver_llm: str,
+    max_attempt: int = 5,
+    test_mode=False,
+):
     """
     parameters:
     - problem: the problem to solve
-    - llm: the language model to use.
+    - data_class: the class of the problem
+    - coding_llm: the language model to use
+    - max_attempt: the maximum number of attempts to execute the code if it fails
+
+    return:
+        the result of the code execution, if it succeeds in max_attempt attempts; otherwise None
     """
-    instruct_query = f"You are an expert programmer that writes simple, concise code in Python. You have been given mathematical problem in the domain of {data_class}, and you need to write a simple and executable python code to solve the problem. ONLY the code is needed, Absolutely NO explanation. Use SymPy."
+
+    instruct_query = f"Imagin that you are an expert programmer that writes simple, concise code in Python. You will be given a mathematical problem in the domain of {data_class}, and your goal is to write some simple and executable python code to solve the problem. ONLY the code is needed, Absolutely NO explanation. You are recommended to use SymPy for symbolic computation."
+
     user_query = (
         f"""Here is the problem you need to solve:\n\n```\n{problem}\n```\n\n"""
     )
     response = call_llm_api(
-        model=coder_llm, system_query=instruct_query, user_query=user_query
-    )
-    resp = response.replace("```", "")
-    resp = remove_python_header(resp)
+        model=solver_llm, system_query=instruct_query, user_query=user_query
+    ).replace("```", "")
+    resp = remove_python_header(response)
     if test_mode:
-        print(f"query sent to {coder_llm}:\n", instruct_query + user_query)
-        print(f"response from {coder_llm}:\n", resp)
+        print(f"query sent to {solver_llm}:\n", instruct_query + user_query)
+        print(f"response from {solver_llm}:\n", resp)
 
     # Attempt to execute the code and capture the output
-    attempt = 5
+    remaining_attempt = max_attempt
     code_result = None
     error = None
-    while attempt > 0:
-        try:
-            code_result = exec_capture_stdout(resp)
-            if test_mode:
-                print(f"code result: {code_result}")
+    while remaining_attempt > 0:
+        succeed, code_result = exec_capture_stdout(resp)
+        if test_mode:
+            print("code runs successfully" if succeed else "code failed to run")
+        if succeed:
             break
-        except Exception as e:
-            error = e
-            if attempt == 1:
-                attempt -= 1
-                continue
-            error = f"Error in code execution: {e}"
-            user_query += f"\nYou provided this response.\n{resp}\nHowever, execution of the response resulted in an error.\n{error}\nPlease correct the error and try again. ONLY the corrected code is needed without any bugs,Absolutely NO explanation. Use SymPy."
-            if test_mode:
-                print(f"query sent to {coder_llm}: ", instruct_query + user_query)
-            response = call_llm_api(
-                model=coder_llm, system_query=instruct_query, user_query=user_query
-            )
-            resp = response.replace("```", "")
-            resp = remove_python_header(resp)
-            if test_mode:
-                print(f"response from {coder_llm}:\n", resp)
-            attempt -= 1
-    if attempt == 0:
-        print(f"Error in code execution: {error}")
-        return None
-    return code_result
+        if remaining_attempt == 1:
+            remaining_attempt -= 1
+            continue
+        error = f"Error in code execution: {code_result}"
+        user_query += f"\nYou provided this response.\n{resp}\nHowever, execution of the response resulted in an error.\n{error}\nPlease correct the error and try again. ONLY the corrected code is needed without any bugs. Absolutely NO explanation."
+        if test_mode:
+            print(f"query sent to {solver_llm}: ", instruct_query + user_query)
+        response = call_llm_api(
+            model=solver_llm, system_query=instruct_query, user_query=user_query
+        ).replace("```", "")
+        resp = remove_python_header(response)
+        if test_mode:
+            print(f"response from {solver_llm}:\n", resp)
+        remaining_attempt -= 1
+    if remaining_attempt == 0:
+        print(error)
+        return
+    else:
+        return code_result
