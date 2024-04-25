@@ -5,3 +5,4 @@ groq
 langchain
 langchain_community
 ragas
+sympy
