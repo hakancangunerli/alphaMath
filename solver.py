@@ -45,10 +45,12 @@ def exec_capture_stdout(code):
 
 
 def solve_problem(
-    problem: str, data_class: str, solver_llm: str, 
+    problem: str,
+    data_class: str,
+    solver_llm: str,
     rag_hint: str = None,
-    coding_hint:str=None,
-    test_mode=False
+    coding_hint: str = None,
+    test_mode=False,
 ):
     """
     parameters:
@@ -64,17 +66,15 @@ def solve_problem(
         the solution to the problem, a string
     """
 
-    instruct_query = f"""Imagine you are a math expert in {data_class}, who is solving a math problem in all seriousness during the exam. You will be given a math problem in LaTeX format wrapped in three backticks (```), which is well-posed and has a unique solution. We might also give you some hints, if available. Your task is to use all everything we give you to provide a complete, detailed and clear solution to the math problem we give you, in LaTeX form, as well as rendering all the calculation steps. Your last sentense MUST be 'Therefore, the solution is XXX', which outputs the final solution. Be extremely accurate. No mistakes allowed."""
+    instruct_query = f"""Imagine you are a math expert in {data_class}, diligently solving a math problem during an exam. You will be provided with a well-posed math problem in LaTeX format wrapped in three backticks (```), along with any available hints. Your task is to utilize all the information provided to deliver a comprehensive, detailed, and clear solution to the math problem, presented in LaTeX form. Additionally, you must render all calculation steps to demonstrate your reasoning and methodology. Your final sentence MUST be 'Therefore, the solution is XXX', where XXX represents the final solution obtained. Accuracy is paramount, with no mistakes permitted."""
 
-    user_query = (
-        f"""Here is the problem you need to solve:\n```\n{problem}\n```\n"""
-    )
+    user_query = f"""Here is the problem you need to solve:\n```\n{problem}\n```\n"""
 
     if rag_hint is not None:
-        user_query+=f"""Here are some example problems and their solutions to help you better solve the problem I give you:\n```{rag_hint}```\n\n"""
+        user_query += f"""Here are some example problems and their solutions to help you better solve the problem I give you:\n```{rag_hint}```\n\n"""
 
     if coding_hint is not None:
-        user_query+=f"""We have also written some Python script to solve that problem. The result from running these codes is `{coding_hint}`. This may not be 100% correct, but may be useful for you to validate the answer. Please use with care.\n"""
+        user_query += f"""We've also prepared Python scripts to address this problem. Upon execution, these codes yield `{coding_hint}`. While the output may not be entirely accurate, it could serve as a helpful tool to validate your answer. Exercise caution when utilizing this resource.\n"""
 
     if test_mode:
         print(f"query sent to {solver_llm}:\n", instruct_query + user_query)
@@ -110,7 +110,7 @@ def solve_problem_by_coding(
         f"""Here is the problem you need to solve:\n\n```\n{problem}\n```\n\n"""
     )
     if rag_hint is not None:
-        user_query+=f"""Here are some example problems and their solutions to help you better solve the problem I give you:\n```{rag_hint}```\n\n"""
+        user_query += f"""Here are some example problems and their solutions to help you better solve the problem I give you:\n```{rag_hint}```\n"""
 
     response = call_llm_api(
         model=solver_llm, system_query=instruct_query, user_query=user_query
@@ -136,7 +136,7 @@ def solve_problem_by_coding(
             remaining_attempt -= 1
             continue
         error = f"Error in code execution: {code_result}"
-        user_query += f"\nYou provided this response.\n{resp}\nHowever, execution of the response resulted in an error.\n{error}\nPlease correct the error and try again. ONLY the corrected code is needed without any bugs. Absolutely NO explanation. In case you still want to add explanation, please all explanations must be done in the form of COMMENTS in python. You are recommended to use SymPy for symbolic computation.\n\n"
+        user_query += f"\nYou provided this response.\n{resp}\nHowever, execution of the response resulted in an error.\n{error}\nPlease rectify the error and attempt again. ONLY the corrected code WITHOUT any error is required. NO explanations are needed within the code; however, if you choose to include any, they must be in the form of COMMENTS in Python. Using SymPy for symbolic computation is recommended.\n\n"
         if test_mode:
             print(f"query sent to {solver_llm}: ", instruct_query + user_query)
         response = call_llm_api(
