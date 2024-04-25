@@ -6,3 +6,5 @@ langchain
 langchain_community
 ragas
 sympy
+sentence-transformers
+chromadb
