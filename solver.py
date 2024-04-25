@@ -12,11 +12,21 @@ def remove_python_header(code_output):
     return code_output.strip()
 
 
+def extract_code_blocks(text):
+    # Regex pattern to find text enclosed within triple backticks
+    pattern = r"```(.*?)```"
+
+    # re.DOTALL allows dot (.) to match newline characters as well
+    code_blocks = re.findall(pattern, text, re.DOTALL)
+
+    return code_blocks[0] if code_blocks else text
+
+
 def exec_capture_stdout(code):
     """
     Function to execute code and capture stdout
     Input: code
-    Output: 
+    Output:
         (True, stdout) if the code executes successfully,
         (False, error message) if otherwise
     """
@@ -87,14 +97,16 @@ def solve_problem_by_coding(
         the result of the code execution, if it succeeds in max_attempt attempts; otherwise None
     """
 
-    instruct_query = f"Imagin that you are an expert programmer that writes simple, concise code in Python. You will be given a mathematical problem in the domain of {data_class}, and your goal is to write some simple and executable python code to solve the problem. ONLY the code is needed, Absolutely NO explanation. You are recommended to use SymPy for symbolic computation."
+    instruct_query = f"Imagine that you are an expert programmer that writes simple, concise code in Python. You will be given a mathematical problem in the domain of {data_class}, and your goal is to write some simple and executable python code to solve the problem. ONLY the code is needed, Absolutely NO explanation. In case you still want to add explanation, please all explanations must be done in the form of COMMENTS in python. You are recommended to use SymPy for symbolic computation."
 
     user_query = (
         f"""Here is the problem you need to solve:\n\n```\n{problem}\n```\n\n"""
     )
     response = call_llm_api(
         model=solver_llm, system_query=instruct_query, user_query=user_query
-    ).replace("```", "")
+    )
+    response = extract_code_blocks(response)
+    response.replace("```", "")
     resp = remove_python_header(response)
     if test_mode:
         print(f"query sent to {solver_llm}:\n", instruct_query + user_query)
@@ -114,12 +126,14 @@ def solve_problem_by_coding(
             remaining_attempt -= 1
             continue
         error = f"Error in code execution: {code_result}"
-        user_query += f"\nYou provided this response.\n{resp}\nHowever, execution of the response resulted in an error.\n{error}\nPlease correct the error and try again. ONLY the corrected code is needed without any bugs. Absolutely NO explanation."
+        user_query += f"\nYou provided this response.\n{resp}\nHowever, execution of the response resulted in an error.\n{error}\nPlease correct the error and try again. ONLY the corrected code is needed without any bugs. Absolutely NO explanation. In case you still want to add explanation, please all explanations must be done in the form of COMMENTS in python. You are recommended to use SymPy for symbolic computation.\n\n"
         if test_mode:
             print(f"query sent to {solver_llm}: ", instruct_query + user_query)
         response = call_llm_api(
             model=solver_llm, system_query=instruct_query, user_query=user_query
-        ).replace("```", "")
+        )
+        response = extract_code_blocks(response)
+        response.replace("```", "")
         resp = remove_python_header(response)
         if test_mode:
             print(f"response from {solver_llm}:\n", resp)
