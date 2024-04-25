@@ -2,3 +2,6 @@ openai==0.28
 ollama
 PyYAML
 groq
+langchain==0.0.330
+langchain_community==0.0.1
+ragas
