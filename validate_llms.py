@@ -18,7 +18,7 @@ def validate_solver_llm(
     solve_method,
     data_class: str,
     dataset: list,
-    solver_llm:str,
+    solver_llm: str,
     levels: list = [1, 2, 3, 4, 5],
     judging_llm: str = "gpt-3.5-turbo",
     max_rejudge: int = 3,
@@ -28,7 +28,7 @@ def validate_solver_llm(
     parameters:
     - solve_method: solve_problem_by_coding or solve_problem
     - data_class: the class of the data, must be in ['algebra','counting_and_probability','geometry','intermediate_algebra','number_theory','prealgebra','precalculus']
-    - dataset: the dataset, a list of problems 
+    - dataset: the dataset, a list of problems
     - solver_llm: the llm used to solve the problem or write the code
     - levels: the levels of the data, default is all 5 levels
     - judging_llm: the llm used to judge the correctness of the solution
@@ -38,7 +38,7 @@ def validate_solver_llm(
         a list of the accuracy at all levels, e.g., [.9, .8, .7, .6, .5]
     and a list of the failure rate at all levels, e.g., [.1, .2, .3, .4, .5]
     """
-    
+
     assert data_class in ALL_PROBLEM_CLASSES, "Invalid data class"
     assert all(
         [level in [1, 2, 3, 4, 5] for level in levels]
@@ -48,7 +48,13 @@ def validate_solver_llm(
 
     prob_num = [0, 0, 0, 0, 0]  # num of tested problems at each level
     correct_num = [0, 0, 0, 0, 0]  # num of correctly-solved problems at each level
-    failed_num = [0, 0, 0, 0, 0] # num of failed files (i.e., can't generate the answer) at each level
+    failed_num = [
+        0,
+        0,
+        0,
+        0,
+        0,
+    ]  # num of failed files (i.e., can't generate the answer) at each level
 
     # # retry files that had errors in the first round
     # retry_files = []
@@ -67,14 +73,12 @@ def validate_solver_llm(
         ans = solve_method(prob, data_class, solver_llm, test_mode=test_mode)
 
         if not ans:
-            print(
-                f"Failed in solving problem {dataset[i]['filename']}."
-            )
+            print(f"Failed in solving problem {dataset[i]['filename']}.")
             failed_num[level - 1] += 1
             # retry_files.append(i)
             # prob_num[level - 1] -= 1
             continue
-        
+
         for _ in range(max_rejudge):
             try:
                 is_correct = judge_correctness(prob, sol, ans, llm=judging_llm)
@@ -82,7 +86,7 @@ def validate_solver_llm(
                     correct_num[level - 1] += 1
                 break
             except ValueError:
-                if _<max_rejudge-1:
+                if _ < max_rejudge - 1:
                     continue
                 else:
                     print(
@@ -97,9 +101,7 @@ def validate_solver_llm(
             print(
                 f"Correctly-solved problem numbers at each level so far: {correct_num}"
             )
-            print(
-                f"Failed problem numbers at each level so far: {failed_num}"
-            )
+            print(f"Failed problem numbers at each level so far: {failed_num}")
 
     # # Retry the files that had errors
     # if retry_files:
@@ -130,11 +132,13 @@ def validate_solver_llm(
     #             f"Correctly-solved problem numbers at each level so far: {correct_num}"
     #         )
 
-    return list(map(lambda x, y: x / y if y != 0 else 0, correct_num, prob_num)), list(map(lambda x, y: x / y if y != 0 else 0, failed_num, prob_num))
+    return list(map(lambda x, y: x / y if y != 0 else 0, correct_num, prob_num)), list(
+        map(lambda x, y: x / y if y != 0 else 0, failed_num, prob_num)
+    )
     # accuracy at each level and failed rate at each level
 
 
-if __name__=='__main__':
+if __name__ == "__main__":
     pass
 #     import os
 #     import json

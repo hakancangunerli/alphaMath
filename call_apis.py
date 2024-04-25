@@ -50,7 +50,7 @@ def call_llm_api(
     model: str,
     system_query: str = "",
     user_query: str = "",
-    time_interval:float=1,
+    time_interval: float = 1,
 ):
     assert model in LLMS, f"LLM must be one of {LLMS}"
 
@@ -58,8 +58,8 @@ def call_llm_api(
     LLMCLients()
 
     if model in LLMS_FROM_OPENAI:
-        t= time.time()
-        res=(
+        t = time.time()
+        res = (
             openai.ChatCompletion.create(
                 model=model,
                 messages=[
@@ -70,10 +70,9 @@ def call_llm_api(
             .choices[0]
             .message["content"]
         )
-        if time.time()-t<time_interval:
-            time.sleep(time_interval-time.time()+t)
+        if time.time() - t < time_interval:
+            time.sleep(time_interval - time.time() + t)
         return res
-        
 
     elif model in CODE_LLMS:
         return ollama.chat(
@@ -85,8 +84,8 @@ def call_llm_api(
         )["message"]["content"]
 
     else:
-        t= time.time()
-        res= (
+        t = time.time()
+        res = (
             LLMCLients.groq_client.chat.completions.create(
                 model=model,
                 messages=[
@@ -97,6 +96,6 @@ def call_llm_api(
             .choices[0]
             .message.content
         )
-        if time.time()-t<time_interval:
-            time.sleep(time_interval-time.time()+t)
+        if time.time() - t < time_interval:
+            time.sleep(time_interval - time.time() + t)
         return res
