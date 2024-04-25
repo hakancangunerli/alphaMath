@@ -41,7 +41,7 @@ class LLMCLients:
         if cls._instance is None:
             with open("config.yaml") as f:
                 cfg = yaml.safe_load(f)
-            openai.api_key = cfg["api_key"]["openai"]
+            cls.openai_client = openai.OpenAI(api_key = cfg["api_key"]["openai"])
             cls.groq_client = Groq(api_key=cfg["api_key"]["groq"])
         return cls._instance
 
@@ -60,7 +60,7 @@ def call_llm_api(
     if model in LLMS_FROM_OPENAI:
         t = time.time()
         res = (
-            openai.ChatCompletion.create(
+            LLMCLients.openai_client.chat.completions.create(
                 model=model,
                 messages=[
                     {"role": "system", "content": system_query},
@@ -68,7 +68,7 @@ def call_llm_api(
                 ],
             )
             .choices[0]
-            .message["content"]
+            .message.content
         )
         if time.time() - t < time_interval:
             time.sleep(time_interval - time.time() + t)
