@@ -1,11 +1,21 @@
 import json
 import os
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import Chroma
+# from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings.sentence_transformer import (
     SentenceTransformerEmbeddings,
 )
 from langchain.docstore.document import Document
+from datasets import Dataset
+import pandas as pd
+from ragas import evaluate
+from ragas.metrics import (
+    faithfulness,
+    answer_relevancy,
+    context_recall,
+    context_precision,
+)
 
 
 def load_json_files(folder_path):
@@ -37,29 +47,88 @@ def split_text(data):
 
     return documents
 
+def test_rag():
+    test_data = load_json_files("merged_dataset/test")
 
-data = load_json_files("merged_dataset/train")
-if not data:
-    print("No data loaded.")
-else:
-    documents = split_text(data)
-    print("Number of documents:", len(documents))
+    if not test_data:
+        print("No train data loaded.")
+    else:
+        #Load the data into Chroma
+        db = get_rag()
+        questions = []
+        answers = []
+        ground_truths = []
+        contexts = []
+        
+        for question in test_data[:9]:
 
-    # Create the open-source embedding function
+            # query = "What is the formula for the area of a circle?"
+            query = question["problem"]
+            solution = question["solution"]
+
+            questions.append(query)
+            ground_truths.append(solution)
+
+            docs = db.similarity_search(query)
+
+            answers.append(docs[0].metadata["solution"])
+            contexts.append([doc.page_content for doc in docs])
+
+        final_data = {
+            "question": questions,
+            "answer": answers,
+            "ground_truth": ground_truths,
+            "contexts": contexts
+        }
+
+        dataset = Dataset.from_dict(final_data)
+        result = evaluate(
+            dataset = dataset, 
+            metrics=[
+                context_precision,
+                # context_recall,
+                faithfulness,
+                answer_relevancy,
+            ],
+        )
+        result.to_pandas().to_csv("results.csv")
+
+def load_rag():
+    data = load_json_files("merged_dataset/train")
+    if not data:
+        print("No train data loaded.")
+    else:
+        documents = split_text(data)
+        print("Number of documents:", len(documents))
+
+        # Create the open-source embedding function
+        embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+
+        try:
+            #Load the data into Chroma
+            db = Chroma.from_documents(
+                documents, embedding=embedding_function, persist_directory="./chroma_db"
+            )
+            query = data[0]["problem"]
+            solution = data[0]["solution"]
+            print("Original solution:", solution)
+            docs = db.similarity_search(query)
+            # Print the results
+            for doc in docs:
+                print(doc.page_content)
+                print("Solution:", doc.metadata["solution"])
+                print("---")
+        except:
+            print("Rag Load Corrupted, please reload Rag")
+
+def get_rag():
     embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    try:
+        #Load the data into Chroma
+        db = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
+        return db
+    except:
+        raise Exception("Rag Load Corrupted, please reload Rag")
 
-    # Load the data into Chroma
-    db = Chroma.from_documents(
-        documents, embedding=embedding_function, persist_directory="./chroma_db"
-    )
-
-    db2 = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
-    # Query the vector store
-    query = "What is the formula for the area of a circle?"
-    docs = db2.similarity_search(query)
-
-    # Print the results
-    for doc in docs:
-        print(doc.page_content)
-        print("Solution:", doc.metadata["solution"])
-        print("---")
+# load_rag()
+# test_rag()

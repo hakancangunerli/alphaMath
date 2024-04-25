@@ -2,9 +2,9 @@ from judge_correctness import judge_correctness
 from solver import solve_problem_by_coding, solve_problem
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+from db_setup import get_rag
 
-rag_data_base = Chroma(persist_directory="./chroma_db", 
-             embedding_function=SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2"))
+rag_data_base = get_rag()
 
 def solve_prob_end2end(problem:str,
                 data_class: str,
@@ -70,7 +70,7 @@ if __name__=='__main__':
         problem='What is the integral of $f(x)=e^{-x^2/2}$ on R?',
                data_class='pre-calculus',
                 correct_solution='$\sqrt{2\pi}$',
-                coding_llm='llama3-70b-8192',
-                main_solver_llm='llama3-70b-8192',
-                judging_llm='llama3-70b-8192',
+                coding_llm='gpt-3.5-turbo',
+                main_solver_llm='gpt-3.5-turbo',
+                judging_llm='gpt-3.5-turbo',
                 test_mode=True))
