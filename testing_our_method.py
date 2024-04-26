@@ -1,5 +1,7 @@
 from constants import ALL_PROBLEM_CLASSES
-from solve_prob_end2end import solve_prob_end2end, solve_prob_directly
+from solve_prob_end2end import solve_prob_end2end
+from logging_config import setup_logging
+import logging
 import os
 import json
 import random
@@ -19,8 +21,8 @@ def test_accuracy(
     main_solver_llm: str,
     judging_llm: str,
     levels: list = [1, 2, 3, 4, 5],
-    full_method: bool = True,
-    show_details: bool = True,
+    use_rag: bool = True,
+    logging_level: str = logging.INFO,
 ):
     """
     Input:
@@ -33,6 +35,12 @@ def test_accuracy(
     Output:
         a list of accuracy ( = number of correctly-solved problems / number of all problems ) at each level
     """
+
+    setup_logging(logging_level)
+
+    if coding_llm is None and main_solver_llm is None:
+        logging.error("Both coding_llm and solving_llm are None.")
+        raise Exception("Both coding_llm and solving_llm cannot be None.")
 
     assert data_class in ALL_PROBLEM_CLASSES, "Invalid data class"
     assert all(
@@ -54,45 +62,36 @@ def test_accuracy(
     if num_problems:  # subsample num_problems problems
         dataset = random.sample(dataset, num_problems)
 
-    if show_details:
-        print(
-            f"Testing on dataset '{data_class}' with levels {str(sorted(set(levels)))}."
-        )
+    logging.info(
+        f"Testing on dataset '{data_class}' with levels {str(sorted(set(levels)))}."
+    )
 
     for i in range(len(dataset)):
         level = dataset[i]["level"]
+        logging.info(
+            f"Working on [{i+1}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level})..."
+        )
         if level not in levels:
-            print(
-                f"[{i}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level}) is not in the test levels."
+            logging.info(
+                f"[{i+1}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level}) is not in the test levels."
             )
             continue
         prob_num[level - 1] += 1
-        if show_details:
-            print(
-                f"[{i}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level}): ",
-                end="",
-            )
 
         prob = dataset[i]["problem"]
         sol = dataset[i]["solution"]
         try:
             is_correct = (
                 solve_prob_end2end(
-                    prob, data_class, sol, coding_llm, main_solver_llm, judging_llm
-                )
-                if full_method
-                else solve_prob_directly(
-                    prob, data_class, sol, main_solver_llm, judging_llm
+                    problem=prob, data_class=data_class, correct_solution=sol, coding_llm=coding_llm, main_solver_llm=main_solver_llm, judging_llm=judging_llm, use_rag=use_rag, logging_level=logging_level
                 )
             )
-            if show_details:
-                print("correct" if is_correct else "incorrect")
+            logging.info(f"[{i+1}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level}): {'correct' if is_correct else 'incorrect'}")
             if is_correct:
                 correct_num[level - 1] += 1
 
         except:
-            if show_details:
-                print("Failed in judging. This problem will not be counted.")
+            logging.warning("Failed in judging. This problem will not be counted.")
             prob_num[level - 1] -= 1
 
     return list(map(lambda x, y: x / y if y != 0 else 0, correct_num, prob_num))
@@ -108,7 +107,7 @@ if __name__ == "__main__":
             main_solver_llm="llama3-70b-8192",
             judging_llm="llama3-70b-8192",
             levels=[1, 2, 3, 4, 5],
-            full_method=True,  # False
-            show_details=True,
+            use_rag=True,
+            logging_level=logging.INFO,
         )
     )

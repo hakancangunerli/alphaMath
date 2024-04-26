@@ -2,6 +2,8 @@ from judge_correctness import judge_correctness
 from constants import ALL_PROBLEM_CLASSES
 import re
 from solver import solve_problem_by_coding
+from logging_config import setup_logging
+import logging
 
 pattern = re.compile(r"\[asy\].*?\[/asy\]", re.DOTALL)
 
@@ -23,6 +25,7 @@ def validate_solver_llm(
     judging_llm: str = "gpt-3.5-turbo",
     max_rejudge: int = 3,
     test_mode=False,
+    logging_level=logging.INFO,
 ):
     """
     parameters:
@@ -39,12 +42,14 @@ def validate_solver_llm(
     and a list of the failure rate at all levels, e.g., [.1, .2, .3, .4, .5]
     """
 
+    setup_logging(logging_level)
+
     assert data_class in ALL_PROBLEM_CLASSES, "Invalid data class"
     assert all(
         [level in [1, 2, 3, 4, 5] for level in levels]
     ), "Levels must be in 1 to 5"
 
-    print(f"Testing dataset {data_class} with levels {str(sorted(set(levels)))}")
+    logging.info(f"Testing dataset {data_class} with levels {str(sorted(set(levels)))}")
 
     prob_num = [0, 0, 0, 0, 0]  # num of tested problems at each level
     correct_num = [0, 0, 0, 0, 0]  # num of correctly-solved problems at each level
@@ -60,8 +65,7 @@ def validate_solver_llm(
     # retry_files = []
 
     for i in range(len(dataset)):
-        if test_mode:
-            print(f"Testing problem {dataset[i]['filename']} of {data_class}")
+        logging.info(f"Testing problem {dataset[i]['filename']} of {data_class}")
 
         level = dataset[i]["level"]
         if level not in levels:
@@ -73,7 +77,7 @@ def validate_solver_llm(
         ans = solve_method(prob, data_class, solver_llm, test_mode=test_mode)
 
         if not ans:
-            print(f"Failed in solving problem {dataset[i]['filename']}.")
+            logging.warning(f"Failed in solving problem {dataset[i]['filename']}.")
             failed_num[level - 1] += 1
             # retry_files.append(i)
             # prob_num[level - 1] -= 1
@@ -89,19 +93,18 @@ def validate_solver_llm(
                 if _ < max_rejudge - 1:
                     continue
                 else:
-                    print(
+                    logging.warning(
                         f"Failed in judging correctness for problem {dataset[i]['filename']} for {max_rejudge} times. We will not count this problem."
                     )
                     prob_num[level - 1] -= 1
 
-        if test_mode:
-            print(
-                f"Problem numbers at each level attempted to solve so far: {prob_num}"
-            )
-            print(
-                f"Correctly-solved problem numbers at each level so far: {correct_num}"
-            )
-            print(f"Failed problem numbers at each level so far: {failed_num}")
+        logging.info(
+            f"Problem numbers at each level attempted to solve so far: {prob_num}"
+        )
+        logging.info(
+            f"Correctly-solved problem numbers at each level so far: {correct_num}"
+        )
+        logging.info(f"Failed problem numbers at each level so far: {failed_num}")
 
     # # Retry the files that had errors
     # if retry_files:

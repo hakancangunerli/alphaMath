@@ -3,6 +3,9 @@ Judge the correctness of a student's answer to a math problem.
 """
 
 from call_apis import *
+from logging_config import setup_logging
+import logging
+
 
 prompt_examples = [
     # these examples come from the training set of MATH
@@ -34,6 +37,7 @@ def judge_correctness(
     ans: str,
     prompt_examples: str = prompt_examples,
     llm: str = "llama3-70b-8192",
+    logging_level: str = logging.INFO,
 ):
     """
     parameters:
@@ -47,6 +51,8 @@ def judge_correctness(
         True if the student's answer is correct, False otherwise
         If the LLM's response is invalid, raise an error
     """
+
+    setup_logging(logging_level)
 
     instruct_query = """
 Imagine that you are a high school math teacher correcting students' homework. You will be given three things: (1) a math problem in LaTeX, (2) a complete solution to this problem, in which the correct answer is wrapped in a box, i.e., \\boxed{answer} (note that there may be multiple boxes), and (3) the student's answer to this problem. These three items will all be wrapped in three backticks (```). Your task is to determine whether the student's answer is correct. If it is, you should respond with "Yes"; otherwise, you should respond with "No". DO NOT return anything other than "Yes" or "No".
@@ -69,13 +75,13 @@ Here are some examples:
         + "```.\nA: "
     )
 
-    # print(f"{instruct_query}\n{user_query}")
+    logging.debug(f"Code for Judging correctness: {instruct_query}\n{user_query}")
 
     response = call_llm_api(
         model=llm, system_query=instruct_query, user_query=user_query
     ).lower()
 
-    # print(f"Response from the Judge LLM: {response}")
+    logging.debug(f"Response from the Judge LLM: {response}")
 
     if "yes" in response and "no" not in response:
         return True
