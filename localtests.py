@@ -2,21 +2,37 @@ import json
 import os
 import random
 import unittest
+import yaml
 
+with open("config.yaml") as f:
+    cfg = yaml.safe_load(f)
 
 class LocalTests(unittest.TestCase):
-    def test_call_apis(self):
+    @unittest.skipIf(cfg["api_key"]["groq"] is "", "Open API key not set")
+    def test_call_apis_groq(self):
         from call_apis import call_llm_api
 
-        for model in ["llama3-70b-8192", "gpt-3.5-turbo"]:
-            resp = call_llm_api(
-                model=model,
-                system_query="Hi! I am a student who is trying to solve a math problem. Can you help me?",
-                user_query="Let $\\mathbf{a} = \\begin{pmatrix} -3 \\\\ 10 \\\\ 1 \\end{pmatrix},$ $\\mathbf{b} = \\begin{pmatrix} 5 \\\\ \\pi \\\\ 0 \\end{pmatrix},$ and $\\mathbf{c} = \\begin{pmatrix} -2 \\\\ -2 \\\\ 7 \\end{pmatrix}.$  Compute\n\\[(\\mathbf{a} - \\mathbf{b}) \\cdot [(\\mathbf{b} - \\mathbf{c}) \\times (\\mathbf{c} - \\mathbf{a})].\\]",
-            )
-            # check if the response is not empty and returns a string
-            self.assertTrue(resp)
-            self.assertIsInstance(resp, str)
+        resp = call_llm_api(
+            model="llama3-70b-8192",
+            system_query="Hi! I am a student who is trying to solve a math problem. Can you help me?",
+            user_query="Let $\\mathbf{a} = \\begin{pmatrix} -3 \\\\ 10 \\\\ 1 \\end{pmatrix},$ $\\mathbf{b} = \\begin{pmatrix} 5 \\\\ \\pi \\\\ 0 \\end{pmatrix},$ and $\\mathbf{c} = \\begin{pmatrix} -2 \\\\ -2 \\\\ 7 \\end{pmatrix}.$  Compute\n\\[(\\mathbf{a} - \\mathbf{b}) \\cdot [(\\mathbf{b} - \\mathbf{c}) \\times (\\mathbf{c} - \\mathbf{a})].\\]",
+        )
+        # check if the response is not empty and returns a string
+        self.assertTrue(resp)
+        self.assertIsInstance(resp, str)
+
+    @unittest.skipIf(cfg["api_key"]["openai"] is "", "Groq API key not set")
+    def test_call_apis_openai(self):
+        from call_apis import call_llm_api
+
+        resp = call_llm_api(
+            model="gpt-3.5-turbo",
+            system_query="Hi! I am a student who is trying to solve a math problem. Can you help me?",
+            user_query="Let $\\mathbf{a} = \\begin{pmatrix} -3 \\\\ 10 \\\\ 1 \\end{pmatrix},$ $\\mathbf{b} = \\begin{pmatrix} 5 \\\\ \\pi \\\\ 0 \\end{pmatrix},$ and $\\mathbf{c} = \\begin{pmatrix} -2 \\\\ -2 \\\\ 7 \\end{pmatrix}.$  Compute\n\\[(\\mathbf{a} - \\mathbf{b}) \\cdot [(\\mathbf{b} - \\mathbf{c}) \\times (\\mathbf{c} - \\mathbf{a})].\\]",
+        )
+        # check if the response is not empty and returns a string
+        self.assertTrue(resp)
+        self.assertIsInstance(resp, str)
 
     def test_validate_solver_llm(self):
         from validate_llms import validate_solver_llm
@@ -37,12 +53,22 @@ class LocalTests(unittest.TestCase):
             solver_llm=DEFAULT_SOLVER_LLM,
             judging_llm=DEFAULT_JUDGE_LLM,
         )
-        # check if the response is not empty and returns a list
+        # check if the response is not empty and returns a tuple
         self.assertTrue(resp)
-        self.assertIsInstance(resp, list)
+        self.assertIsInstance(resp, tuple)
 
-        # check if all the elements in the list are between 0 and 1
-        for i in resp:
+        # check if the first element in the tuple is a list
+        self.assertIsInstance(resp[0], list)
+
+        # check if the second element in the tuple is a list
+        self.assertIsInstance(resp[1], list)
+
+        # check if all the elements in the first list are between 0 and 1
+        for i in resp[0]:
+            self.assertTrue(0 <= i <= 1)
+
+        # check if all the elements in the second list are between 0 and 1
+        for i in resp[1]:
             self.assertTrue(0 <= i <= 1)
 
     def test_llm_solver(self):
