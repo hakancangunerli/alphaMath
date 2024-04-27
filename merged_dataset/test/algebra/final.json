@@ -1,0 +1,72 @@
+[
+    {
+        "problem": "Consider the function $f(x)=5x+4$.  What is $f(1)$?",
+        "solution": "We have $f(1) = 5\\cdot 1+4 =5+4=\\boxed{9}$.",
+        "level": 1,
+        "class": "algebra",
+        "filename": "171"
+    },
+    {
+        "problem": "Expand the following expression: $7(3y+2)$",
+        "solution": "We apply the distributive property to get\\begin{align*}\n7(3y+2) &= 7\\cdot 3y+7\\cdot 2\\\\\n&= \\boxed{21y+14}.\n\\end{align*}",
+        "level": 1,
+        "class": "algebra",
+        "filename": "182"
+    },
+    {
+        "problem": "Suppose $P$ is the point $(5,3)$ and $Q$ is the point $(-3,6)$. What is the midpoint of $\\overline{PQ}$?",
+        "solution": "The midpoint of $\\overline{PQ}$ is $\\displaystyle \\left(\\frac{5+(-3)}{2}, \\frac{3+6}{2}\\right) = \\boxed{\\left(1,\\frac{9}{2}\\right)}$.",
+        "level": 2,
+        "class": "algebra",
+        "filename": "1144"
+    },
+    {
+        "problem": "Evaluate $\\log_21$.",
+        "solution": "We have $2^0=1$, so $\\log_2 1 = \\boxed{0}$.",
+        "level": 2,
+        "class": "algebra",
+        "filename": "1185"
+    },
+    {
+        "problem": "Eight pounds of feathers and two ounces of gold together cost $\\$932$. Fourteen pounds of feathers and three ounces of gold together cost $\\$1402$. What is the cost of five pounds of feathers and five ounces of gold?",
+        "solution": "Let $f$ be the cost of a pound of feathers and $g$ the cost of an ounce of gold.  We have \\begin{align*}\n8f+2g&=932 \\\\\n14f+3g&=1402\n\\end{align*}Solving the first equation for $g$ we get $g=466-4f$.  Substituting into the second equation, we solve \\[\n14f+3(466-4f)=1402\n\\]to find $f=2$.  Substituting into $g=466-4f$ we have $g=458$.  Thus five pounds of feathers and five ounces of gold costs $5(f+g)=\\boxed{2300}$ dollars.",
+        "level": 3,
+        "class": "algebra",
+        "filename": "1069"
+    },
+    {
+        "problem": "Evaluate $(1+2i)6-3i$.",
+        "solution": "Distribute the factor of 6 and simplify to obtain $(1+2i)6-3i=6+12i-3i=\\boxed{6+9i}$.",
+        "level": 3,
+        "class": "algebra",
+        "filename": "1098"
+    },
+    {
+        "problem": "Mike paid $\\$1.25$ for a stamp three years ago. He was just offered double that amount for the stamp. Assuming the stamp's offer price doubles every three years, how many dollars will he be offered in 12 more years?",
+        "solution": "The stamp is currently worth $\\$2.50$. $12$ years is four more doubling periods, so at the end the stamp will be worth $2^4=16$ times what it is now, or\n\n$$16(\\$2.50)=\\boxed{\\$40}$$",
+        "level": 4,
+        "class": "algebra",
+        "filename": "1043"
+    },
+    {
+        "problem": "Consider the geometric sequence $\\frac{125}{9}, \\frac{25}{3}, 5, 3, \\ldots$. What is the eighth term of the sequence? Express your answer as a common fraction.",
+        "solution": "The common ratio between consecutive terms is $\\frac{3}{5}$ (you can choose any two consecutive terms and divide the second one by the first to find the common ratio). So the $n^\\text{th}$ term of the sequence is $\\frac{125}{9} \\cdot \\left( \\frac{3}{5} \\right)^{n-1}$. Plugging in $n=8$, we get $$\n\\frac{125}{9} \\cdot \\left( \\frac{3}{5} \\right)^{7} = \\frac{5^3}{3^2} \\cdot \\frac{3^7}{5^7}\n= \\frac{3^5}{5^4}\n= \\boxed{\\frac{243}{625}}.\n$$",
+        "level": 4,
+        "class": "algebra",
+        "filename": "1072"
+    },
+    {
+        "problem": "Compute the range of the function $f(x) = \\sqrt{x^2}$.",
+        "solution": "We can see that $f(x) = \\sqrt{x^2} = |x|$. (Note that $f(x) \\not = x$ since $x$ can be negative.) Because $|x|$ takes on all non-negative values, the range is $\\boxed{[0,\\infty)}$.",
+        "level": 5,
+        "class": "algebra",
+        "filename": "1051"
+    },
+    {
+        "problem": "Photons of red light have a wavelength of approximately $7\\times 10^{-7}$ meters. The energy of a photon is inversely proportional to its wavelength. A photon with 2000 times the energy as a photon of red light will have a wavelength that can be written as $a\\cdot 10^b$ meters, where $1\\le a < 10$. (In other words, in scientific notation.)  What is $a+b$ written as a decimal?",
+        "solution": "Let the energy of a photon equal $E$ and the wavelength equal $\\lambda$.  Since the wavelength is inversely proportional to the energy, the product $E\\lambda$ must be equal to some constant, say $k$.  Given photons of red light with a wavelength of $7\\times10^{-7}$, we can write: \\begin{align*}\nE(7\\times10^{-7})&=k\\\\\n\\Rightarrow\\qquad 7\\times10^{-7}&=\\frac{k}{E}\n\\end{align*} Now, we are asked to find the wavelength of a photon with 2000 times the energy of red light.  Substitute $2000E$ for $E$ in the original expression: \\begin{align*}\n(2000E)\\lambda&=k\\\\\n\\Rightarrow\\qquad \\lambda&=\\frac{k}{2000E}\\\\\n&=\\frac{1}{2000}\\cdot\\frac{k}{E}\\\\\n&=\\frac{1}{2\\times10^3}\\cdot7\\times10^{-7}\\\\\n&={3.5\\times10^{-10} \\text{ meters}}\n\\end{align*} Therefore, we have $a+b = \\boxed{-6.5}$.",
+        "level": 5,
+        "class": "algebra",
+        "filename": "578"
+    }
+]

@@ -1,0 +1,72 @@
+[
+    {
+        "problem": "Below is the graph of $y = a \\sin (bx + c)$ for some positive constants $a,$ $b,$ and $c.$  Find $a.$\n\n[asy]import TrigMacros;\n\nsize(300);\n\nreal f(real x)\n{\n\treturn 2*sin(4*x + pi/2);\n}\n\ndraw(graph(f,-pi,pi,n=700,join=operator ..),red);\ntrig_axes(-pi,pi,-3,3,pi/2,1);\nlayer();\nrm_trig_labels(-2,2, 2);\n\nlabel(\"$1$\", (0,1), E);\nlabel(\"$2$\", (0,2), E);\nlabel(\"$-1$\", (0,-1), E);\nlabel(\"$-2$\", (0,-2), E);\n[/asy]",
+        "solution": "The maximum value of $a \\sin (bx + c)$ is $a,$ so $a = \\boxed{2}.$",
+        "level": 1,
+        "class": "precalculus",
+        "filename": "30"
+    },
+    {
+        "problem": "Below is the graph of $y = a \\cos bx$ for some positive constants $a$ and $b.$  Find $a.$\n\n[asy]import TrigMacros;\n\nsize(400);\n\nreal g(real x)\n{\n\treturn (3*cos(4*x));\n}\n\ndraw(graph(g,-3*pi,3*pi,n=700,join=operator ..),red);\ntrig_axes(-3*pi,3*pi,-4,4,pi/2,1);\nlayer();\nrm_trig_labels(-5, 5, 2);\n\nlabel(\"$1$\", (0,1), E);\nlabel(\"$2$\", (0,2), E);\nlabel(\"$3$\", (0,3), E);\nlabel(\"$-1$\", (0,-1), E);\nlabel(\"$-2$\", (0,-2), E);\nlabel(\"$-3$\", (0,-3), E);\n[/asy]",
+        "solution": "The maximum value of $a \\cos bx$ is $a,$ so $a = \\boxed{3}.$",
+        "level": 1,
+        "class": "precalculus",
+        "filename": "300"
+    },
+    {
+        "problem": "A point has rectangular coordinates $(8,-3,-1)$ and spherical coordinates $(\\rho, \\theta, \\phi).$  Find the rectangular coordinates of the point with spherical coordinates $(\\rho, -\\theta, \\phi).$",
+        "solution": "We have that\n\\begin{align*}\n8 &= \\rho \\sin \\phi \\cos \\theta, \\\\\n-3 &= \\rho \\sin \\phi \\sin \\theta, \\\\\n-1 &= \\rho \\cos \\phi.\n\\end{align*}Then\n\\begin{align*}\n\\rho \\sin \\phi \\cos (-\\theta) &= \\rho \\sin \\phi \\cos \\theta = 8, \\\\\n\\rho \\sin \\phi \\sin (-\\theta) &= -\\rho \\sin \\phi \\sin \\theta = 3, \\\\\n\\rho \\cos \\phi &= -1,\n\\end{align*}so the rectangular coordinates are $\\boxed{(8,3,-1)}.$",
+        "level": 2,
+        "class": "precalculus",
+        "filename": "1093"
+    },
+    {
+        "problem": "If $\\theta$ is the angle between the vectors $\\begin{pmatrix} 3 \\\\ -4 \\end{pmatrix}$ and $\\begin{pmatrix} 12 \\\\ 5 \\end{pmatrix}$, then find $\\cos \\theta$.",
+        "solution": "We have that\n\\begin{align*}\n\\cos \\theta &= \\frac{\\begin{pmatrix} 3 \\\\ -4 \\end{pmatrix} \\cdot \\begin{pmatrix} 12 \\\\ 5 \\end{pmatrix}}{\\left\\| \\begin{pmatrix} 3 \\\\ -4 \\end{pmatrix} \\right\\| \\cdot \\left\\| \\begin{pmatrix} 12 \\\\ 5 \\end{pmatrix} \\right\\|} \\\\\n&= \\frac{3 \\cdot 12 + (-4) \\cdot 5}{\\sqrt{3^2 + (-4)^2} \\cdot \\sqrt{12^2 + 5^2}} \\\\\n&= \\frac{36 - 20}{5 \\cdot 13} \\\\\n&= \\boxed{\\frac{16}{65}}.\n\\end{align*}",
+        "level": 2,
+        "class": "precalculus",
+        "filename": "1096"
+    },
+    {
+        "problem": "Find the point of intersection of the line\n\\[\\frac{x - 2}{3} = \\frac{y + 1}{4} = \\frac{z - 2}{12}\\]and $x - y + z = 5.$",
+        "solution": "Let\n\\[t = \\frac{x - 2}{3} = \\frac{y + 1}{4} = \\frac{z - 2}{12}.\\]Then $x = 3t + 2,$ $y = 4t - 1,$ and $z = 12t + 2.$  Substituting into $x - y + z = 5$ gives us\n\\[(3t + 2) - (4t - 1) + (12t + 2) = 5.\\]Solving, we find $t = 0.$  Thus, $(x,y,z) = \\boxed{(2,-1,2)}.$",
+        "level": 3,
+        "class": "precalculus",
+        "filename": "1024"
+    },
+    {
+        "problem": "For a positive constant $c,$ in cylindrical coordinates $(r,\\theta,z),$ find the shape described by the equation\n\\[r = c.\\](A) Line\n(B) Circle\n(C) Plane\n(D) Sphere\n(E) Cylinder\n(F) Cone\n\nEnter the letter of the correct option.",
+        "solution": "In cylindrical coordinates, $r$ denotes the distance between a point and the $z$-axis.  So if this distance is fixed, then we obtain a cylinder.  The answer is $\\boxed{\\text{(E)}}.$\n\n",
+        "level": 3,
+        "class": "precalculus",
+        "filename": "103"
+    },
+    {
+        "problem": "In triangle $ABC,$ $\\angle A = 90^\\circ,$ $AC = 1,$ and $AB = 5.$  Point $D$ lies on ray $\\overrightarrow{AC}$ such that $\\angle DBC = 2 \\angle CBA.$  Compute $AD.$",
+        "solution": "Let $\\theta = \\angle CBA.$  Since $\\angle DBC = 2 \\theta,$ $\\angle DBA = 3 \\theta.$\n\n\n\nNote that $\\tan \\theta = \\frac{1}{5}.$  By the triple angle formula,\n\\[\\tan 3 \\theta = \\frac{3 \\tan \\theta - \\tan^3 \\theta}{1 - 3 \\tan^2 \\theta} = \\frac{3 (\\frac{1}{5}) - (\\frac{1}{5})^3}{1 - 3 (\\frac{1}{5})^2} = \\frac{37}{55}.\\]Therefore,\n\\[AD = AB \\tan 3 \\theta = 5 \\cdot \\frac{37}{55} = \\boxed{\\frac{37}{11}}.\\]",
+        "level": 4,
+        "class": "precalculus",
+        "filename": "1018"
+    },
+    {
+        "problem": "Three vertices of a cube in space have coordinates $A = (2,3,0),$ $B = (0,5,4),$ and $C = (4,1,8).$  Compute the coordinates of the center of the cube.",
+        "solution": "Let $s$ be the side length of the cube.  Then the only possible distances of between two vertices of the cube are $s,$ $s \\sqrt{2},$ and $s \\sqrt{3}.$\n\n\n\nSince $AB = 2 \\sqrt{6},$ $BC = 4 \\sqrt{3},$ and $AC = 6 \\sqrt{2},$ and\n\\[2 \\sqrt{6} < 4 \\sqrt{3} < 6 \\sqrt{2},\\]they must be equal to $s,$ $s \\sqrt{2},$ and $s \\sqrt{3},$ respectively.  Furthermore, the only lengths of $s \\sqrt{3}$ are space diagonals of the cube.\n\nThis means that $\\overline{AC}$ is a space diagonal of the cube, so the center of the cube is the midpoint of $\\overline{AC},$ which is $\\boxed{(3,2,4)}.$",
+        "level": 4,
+        "class": "precalculus",
+        "filename": "1019"
+    },
+    {
+        "problem": "One sphere is centered at $(3,-5,7)$ with radius $5 \\sqrt{5}.$  A second sphere is centered at $(0,1,1)$ with radius $2 \\sqrt{17}.$  The two spheres intersect in a circle.  Find the radius of this circle.",
+        "solution": "Let $A = (3,-5,7),$ the center of the first sphere, and let $B = (0,1,1),$ the center of the second sphere.  We can compute that $AB = 9.$\n\nLet $C$ be a point on the intersection of both spheres, so $AC = 5 \\sqrt{5}$ and $BC = 2 \\sqrt{17}.$\n\n\n\nBy Heron's formula, we can compute that $[ABC] = 3 \\sqrt{149}.$\n\nLet $D$ be the foot of the perpendicular from $C$ to $\\overline{AB}.$\n\n\n\nThen the intersection of both spheres is the circle centered at $D$ with radius $CD.$  Thus,\n\\[CD = \\frac{2 [ABC]}{AB} = \\frac{6 \\sqrt{149}}{9} = \\boxed{\\frac{2 \\sqrt{149}}{3}}.\\]",
+        "level": 5,
+        "class": "precalculus",
+        "filename": "396"
+    },
+    {
+        "problem": "A reflection takes $\\begin{pmatrix} 5 \\\\ 0 \\end{pmatrix}$ to $\\begin{pmatrix} 4 \\\\ 3 \\end{pmatrix}.$  Which vector does the reflection take $\\begin{pmatrix} -2 \\\\ 3 \\end{pmatrix}$ to?",
+        "solution": "The midpoint of $(5,0)$ and $(4,3)$ is\n\\[\\left( \\frac{5 + 4}{2}, \\frac{0 + 3}{2} \\right) = \\left( \\frac{9}{2}, \\frac{3}{2} \\right).\\]This tells us that the vector being reflected over is a scalar multiple of $\\begin{pmatrix} \\frac{9}{2} \\\\ \\frac{3}{2} \\end{pmatrix}.$  We can then assume that the vector being reflected over is $\\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix}.$\n\n\n\nThe projection of $\\begin{pmatrix} -2 \\\\ 3 \\end{pmatrix}$ onto $\\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix}$ is\n\\[\\operatorname{proj}_{\\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix}} \\begin{pmatrix} -2 \\\\ 3 \\end{pmatrix} = \\frac{\\begin{pmatrix} -2 \\\\ 3 \\end{pmatrix} \\cdot \\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix}}{\\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix} \\cdot \\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix}} \\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix} = \\frac{-3}{10} \\begin{pmatrix} 3 \\\\ 1 \\end{pmatrix} = \\begin{pmatrix} -\\frac{9}{10} \\\\ -\\frac{3}{10} \\end{pmatrix}.\\]Hence, the reflection of $\\begin{pmatrix} -2 \\\\ 3 \\end{pmatrix}$ is $2 \\begin{pmatrix} -\\frac{9}{10} \\\\ -\\frac{3}{10} \\end{pmatrix} - \\begin{pmatrix} -2 \\\\ 3 \\end{pmatrix} = \\boxed{\\begin{pmatrix} 1/5 \\\\ -18/5 \\end{pmatrix}}.$",
+        "level": 5,
+        "class": "precalculus",
+        "filename": "398"
+    }
+]

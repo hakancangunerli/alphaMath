@@ -1,0 +1,72 @@
+[
+    {
+        "problem": "What is the value of the expression $(-5)^3 + (-2)^3 + 2^3 + 5^3$?",
+        "solution": "For any real number $x$, $(-x)^3=-x^3$.  It follows that $(-x)^3+x^3=0$.  Therefore, $(-5)^3+(-2)^3+2^3+5^3=(-5)^3+0+5^3=\\boxed{0}$.",
+        "level": 1,
+        "class": "prealgebra",
+        "filename": "918"
+    },
+    {
+        "problem": "In the diagram, what is the value of $x?$ [asy]\nsize(150);\ndraw((0,5)--(0,0)--(5,0));\ndraw((0,0)--(3,5));\ndraw((0,.3)--(.3,.3)--(.3,0));\nlabel(\"$2x^\\circ$\",(.5,2));\nlabel(\"$3x^\\circ$\",(1,.6));\n[/asy]",
+        "solution": "The angles $2x^{\\circ}$ and $3x^{\\circ}$ shown are complementary and thus add to $90^{\\circ}.$ Therefore, $2x+3x=90$ or $5x=90$ and so $x=\\frac{90}{5}=\\boxed{18}.$",
+        "level": 1,
+        "class": "prealgebra",
+        "filename": "82"
+    },
+    {
+        "problem": "A right triangle has a hypotenuse of length 5 units and a leg of length 3 units. How many square units is the area of the triangle?",
+        "solution": "The other leg has length $\\sqrt{5^2-3^2}=4$.  So the area is\n\n$$\\frac{3(4)}{2}=\\boxed{6}$$",
+        "level": 2,
+        "class": "prealgebra",
+        "filename": "1066"
+    },
+    {
+        "problem": "Alison wants to approximate the cost of her basket of groceries. She bought a cake for $17.86$ dollars, a bag of apples for $7.46$ dollars, and a bag of celery for $8.66$ dollars. Which of the following is the closest to the actual cost of the groceries?\n\n$\\bullet$ A. $50$ dollars\n\n$\\bullet$ B. $38$ dollars\n\n$\\bullet$ C. $34$ dollars\n\n$\\bullet$ D. $26$ dollars\n\n$\\bullet$ E. $20$ dollars\n\nExpress your answer as A, B, C, D, or E.",
+        "solution": "We can round $17.86$ dollars to $18$ dollars, $7.46$ dollars to $7$ dollars, and $8.66$ dollars to $9$ dollars. The approximate cost of the groceries is $18+7+9=34$ dollars, which is answer choice $\\boxed{\\text{C}}.$\n\nNote that a calculator gives the answer $33.98$ for the actual cost, which confirms that answer choice C is the closest to the actual cost.",
+        "level": 2,
+        "class": "prealgebra",
+        "filename": "1105"
+    },
+    {
+        "problem": "Max must take 10 steps to go the same distance as three of his dad's steps. His dad takes 30 steps to walk down the hall. How many steps must Max take to walk down the same hall?",
+        "solution": "Using the given information, we have the ratio $10 \\text{ Max steps} : 3 \\text{ Dad steps}$. Multiplying both sides by $10$, we get the ratio $100 \\text{ Max steps} : 30 \\text{ Dad steps}$. Thus, $30$ of his dad's steps are the same as $\\boxed{100}$ of his steps.",
+        "level": 3,
+        "class": "prealgebra",
+        "filename": "1839"
+    },
+    {
+        "problem": "Simplify $\\frac{1}{5}\\cdot \\frac{8}{7}\\div \\frac{12}{20}$.",
+        "solution": "First, we can use the division rule so that we have an expression with only multiplication of fractions.  We get $$\\frac{1}{5}\\cdot \\frac{8}{7}\\div \\frac{12}{20}=\\frac{1}{5}\\cdot \\frac{8}{7}\\cdot \\frac{20}{12}.$$Now, notice that $5$ and $20$ have a common factor of $5$.  We can also see that $8$ and $12$ have a common factor of $4$.  Therefore, we can simplify to get $$\\frac{1}{5}\\cdot \\frac{8}{7}\\cdot \\frac{20}{12}=\\frac{1}{\\cancel{5}}\\cdot \\frac{\\cancelto{2}{8}}{7}\\cdot \\frac{\\cancelto{4}{20}}{\\cancelto{3}{12}}=\\frac{1\\cdot 2 \\cdot 4}{7\\cdot 3}=\\boxed{\\frac{8}{21}}.$$",
+        "level": 3,
+        "class": "prealgebra",
+        "filename": "1995"
+    },
+    {
+        "problem": "A circle of radius $2$ is inscribed in a semicircle, as shown. The area inside the semicircle but outside the circle is shaded. What fraction of the semicircle's area is shaded?\n\n[asy]\nunitsize(6mm);\ndefaultpen(linewidth(.8pt)+fontsize(8pt));\ndotfactor=4;\n\nfilldraw(Arc((0,0),4,0,180)--cycle,gray,black);\nfilldraw(Circle((0,2),2),white,black);\ndot((0,2));\ndraw((0,2)--((0,2)+2*dir(60)));\nlabel(\"$2$\",midpoint((0,2)--((0,2)+2*dir(60))),SE);\n[/asy]",
+        "solution": "The area of the circle inscribed inside the semicircle is $ \\pi r^2 \\Rightarrow \\pi(2^2) = 4 \\pi .$ The area of the larger circle (semicircle's area x 2) is $ \\pi r^2 \\Rightarrow \\pi(4^2)= 16 \\pi$ (the diameter of the inscribed circle, $4$, is the same as the radius of the semicircle). Thus, the area of the semicircle is $\\frac{1}{2}(16 \\pi) \\Rightarrow 8 \\pi .$ The fraction of the semicircle that is unshaded is $\\frac{4 \\pi}{8 \\pi} = \\frac{1}{2}$. Therefore, the fraction of the semicircle that is shaded is $1 - \\frac{1}{2} = \\boxed{\\frac{1}{2}}$.",
+        "level": 4,
+        "class": "prealgebra",
+        "filename": "1011"
+    },
+    {
+        "problem": "Let $PQRS$ be a square piece of paper. $P$ is folded onto $R$ and then $Q$ is folded onto $S$. The area of the resulting figure is 9 square inches. Find the perimeter of square $PQRS$. [asy]\n/* AMC8 1998 #20P */\nsize(1inch,1inch);\nlabel(\"$P$\", (0, 72), SE);\nlabel(\"$Q$\", (72, 72), SW);\nlabel(\"$S$\", (0, 0), NE);\nlabel(\"$R$\", (72, 0), NW);\ndraw((0,0)--(72,0)--(72,72)--(0,72)--cycle);\n[/asy]",
+        "solution": "After folding the square twice the resulting figure is isosceles triangle with area 9 square inches. Since there are 4 such congruent triangles in the square, the area of the square is 36 square inches. Therefore, the sides of $PQRS$ are 6 inches, and the perimeter is $\\boxed{24}$ inches.",
+        "level": 4,
+        "class": "prealgebra",
+        "filename": "1782"
+    },
+    {
+        "problem": "An ordinary $6$-sided die has a number on each face from $1$ to $6$ (each number appears on one face). How many ways can I paint two faces of a die blue, so that the product of the numbers on the painted faces isn't equal to $6$?",
+        "solution": "First, let's ignore the requirement that the product can't be $6$. Then I can pick the first blue face in $6$ ways, and the second blue face in $5$ ways, making $6\\cdot 5 = 30$ choices in all. But we've actually counted each possible result twice, because it makes no difference which of the two blue faces I chose first and which I chose second. So the number of different pairs of faces is really $(6\\cdot 5)/2$, or $15$.\n\nNow we exclude the pairs which have a product of $6$. There are two such pairs: $\\{1,6\\}$ and $\\{2,3\\}$. That leaves me $\\boxed{13}$ pairs of faces I can paint blue.",
+        "level": 5,
+        "class": "prealgebra",
+        "filename": "1042"
+    },
+    {
+        "problem": "$\\textbf{Juan's Old Stamping Grounds}$\n\nJuan organizes the stamps in his collection by country and by the decade in which they were issued. The prices he paid for them at a stamp shop were: Brazil and France, $6$ cents each, Peru $4$ cents each, and Spain $5$ cents each. (Brazil and Peru are South American countries and France and Spain are in Europe.) [asy]\n/* AMC8 2002 #8, 9, 10 Problem */\nsize(3inch, 1.5inch);\nfor ( int y = 0; y <= 5; ++y )\n{\n\ndraw((0,y)--(18,y));\n}\ndraw((0,0)--(0,5));\ndraw((6,0)--(6,5));\ndraw((9,0)--(9,5));\ndraw((12,0)--(12,5));\ndraw((15,0)--(15,5));\ndraw((18,0)--(18,5));\n\nlabel(scale(0.8)*\"50s\", (7.5,4.5));\nlabel(scale(0.8)*\"4\", (7.5,3.5));\nlabel(scale(0.8)*\"8\", (7.5,2.5));\nlabel(scale(0.8)*\"6\", (7.5,1.5));\nlabel(scale(0.8)*\"3\", (7.5,0.5));\n\nlabel(scale(0.8)*\"60s\", (10.5,4.5));\nlabel(scale(0.8)*\"7\", (10.5,3.5));\nlabel(scale(0.8)*\"4\", (10.5,2.5));\nlabel(scale(0.8)*\"4\", (10.5,1.5));\nlabel(scale(0.8)*\"9\", (10.5,0.5));\n\nlabel(scale(0.8)*\"70s\", (13.5,4.5));\nlabel(scale(0.8)*\"12\", (13.5,3.5));\nlabel(scale(0.8)*\"12\", (13.5,2.5));\nlabel(scale(0.8)*\"6\", (13.5,1.5));\nlabel(scale(0.8)*\"13\", (13.5,0.5));\n\nlabel(scale(0.8)*\"80s\", (16.5,4.5));\nlabel(scale(0.8)*\"8\", (16.5,3.5));\nlabel(scale(0.8)*\"15\", (16.5,2.5));\nlabel(scale(0.8)*\"10\", (16.5,1.5));\nlabel(scale(0.8)*\"9\", (16.5,0.5));\n\nlabel(scale(0.8)*\"Country\", (3,4.5));\nlabel(scale(0.8)*\"Brazil\", (3,3.5));\nlabel(scale(0.8)*\"France\", (3,2.5));\nlabel(scale(0.8)*\"Peru\", (3,1.5));\nlabel(scale(0.8)*\"Spain\", (3,0.5));\n\nlabel(scale(0.9)*\"Juan's Stamp Collection\", (9,0), S);\nlabel(scale(0.9)*\"Number of Stamps by Decade\", (9,5), N);\n[/asy] What was the average price, in cents, of his $70\\text{'s}$ stamps? Round your answer to the nearest tenth of a cent.",
+        "solution": "The $\\text{70's}$ stamps cost:\n\n$\\bullet$  Brazil, $12(\\$ 0.06) = \\$ 0.72;$\n\n$\\bullet$  Peru, $6(\\$ 0.04) = \\$ 0.24;$\n\n$\\bullet$  France, $12(\\$ 0.06) = \\$ 0.72;$\n\n$\\bullet$  Spain, $13(\\$ 0.05) = \\$ 0.65.$\n\nThe total is $\\$2.33$ for the $43$ stamps and the average price is $\\frac{\\$ 2.33}{43} \\approx \\$0.054 = \\boxed{5.4 \\text{ cents}}.$",
+        "level": 5,
+        "class": "prealgebra",
+        "filename": "1044"
+    }
+]

@@ -1,0 +1,72 @@
+[
+    {
+        "problem": "If $f(x)$ is an even function and $g(x)$ is an odd function, find if $f(g(x^3))$ is even, odd, or neither.\n\nEnter \"odd\", \"even\", or \"neither\".",
+        "solution": "Substituting $-x$ for $x$ gives us $f(g(-x^3)) = f(-g(x^3)) = f(g(x^3))$ so $f(g(x^3))$ is $\\boxed{\\text{even}}$.",
+        "level": 1,
+        "class": "intermediate_algebra",
+        "filename": "1230"
+    },
+    {
+        "problem": "The fourth term of a geometric series is $24$ and the eleventh term is $3072$. What is the common ratio?",
+        "solution": "Let $a$ be the first term and $r$ be the common ratio. Then we have, $ar^3 = 24$ and $ar^{10} = 3072$.  Dividing gives us\n$$r^7 = \\frac{3072}{24} = 128$$which means $r = \\boxed{2}.$",
+        "level": 1,
+        "class": "intermediate_algebra",
+        "filename": "1959"
+    },
+    {
+        "problem": "Compute the sum and enter your answer as a common fraction:\n$$\n\\begin{array}{r r@{}c@{}l}\n& 1 &.& 11111111\\ldots \\\\\n& 0 &.& 11111111\\ldots \\\\\n& 0 &.& 01111111\\ldots \\\\\n& 0 &.& 00111111\\ldots \\\\\n& 0 &.& 00011111\\ldots \\\\\n& 0 &.& 00001111\\ldots \\\\\n& 0 &.& 00000111\\ldots \\\\\n+ &&\\vdots \\\\\n\\hline\n&&& ~~~?\n\\end{array}\n$$",
+        "solution": "The first addend, $1.11111111\\ldots$, is by itself equal to the sum of the infinite geometric series\n$$1+\\frac 1{10}+\\left(\\frac 1{10}\\right)^2+\\left(\\frac 1{10}\\right)^3+\\cdots,$$which is $\\frac 1{1-\\frac 1{10}}=\\frac{10}9$.\n\nThe second addend is one-tenth of this, so equals $\\frac 19$. The third addend is one-tenth of the second addend, and so on. Thus the sum of the infinite column of infinite decimals is\n\\begin{align*}\n\\frac{10}9\\cdot\\left[1+\\frac 1{10}+\\left(\\frac 1{10}\\right)^2+\\cdots\\right] &= \\frac{10}9\\cdot\\frac{10}9 \\\\\n&= \\boxed{\\frac{100}{81}}.\n\\end{align*}Notice that we have just added $1+\\frac 2{10}+\\frac 3{100}+\\frac 4{1000}+\\cdots$, sneakily.",
+        "level": 2,
+        "class": "intermediate_algebra",
+        "filename": "632"
+    },
+    {
+        "problem": "What is the smallest positive integer solution to $(100,000,000 \\div x^4 ) < 1$?",
+        "solution": "The fraction's numerator is equal to $10^8$, or $100^4$.  Taking the fourth root of both sides, we find that $\\frac{100}{x} < 1$, meaning that $100<x$ (since $x$ is positive).  So $x = \\boxed{101}$ is the smallest positive integer solution.",
+        "level": 2,
+        "class": "intermediate_algebra",
+        "filename": "712"
+    },
+    {
+        "problem": "The number $$\\sqrt{104\\sqrt6+468\\sqrt{10}+144\\sqrt{15}+2006}$$can be written as $a\\sqrt2+b\\sqrt3+c\\sqrt5$, where $a$, $b$, and $c$ are positive integers.  Find $a\\cdot b\\cdot c.$",
+        "solution": "We have \\[\\left(a\\sqrt{2}+b\\sqrt{3}+c\\sqrt{5}\\right)^2 = 104\\sqrt{6}+468\\sqrt{10}+144\\sqrt{15}+2006,\\]or \\[2ab\\sqrt{6}+2ac\\sqrt{10}+2bc\\sqrt{15}+(2a^2+3b^2+5c^2)=104\\sqrt{6}+468\\sqrt{10}+144\\sqrt{15}+2006.\\]Since $a,b,c$ are integers, we get the four equations \\[\\begin{aligned} 2ab &= 104, \\\\ 2ac &= 468, \\\\ 2bc &= 144, \\\\ 2a^2+3b^2+5c^2 &= 2006. \\end{aligned}\\]Thus, $ab=52$, $ac=234$, and $bc=72$. To find $abc$, we multiply these three equations together, getting \\[(abc)^2 = 52 \\cdot 234 \\cdot 72 = (2^2 \\cdot 13) \\cdot (2 \\cdot 3^2 \\cdot 13) \\cdot (2^3 \\cdot 3^2) = 2^6 \\cdot 3^4 \\cdot 13^2.\\]Then, $abc = 2^3 \\cdot 3^2 \\cdot 13 = \\boxed{936}$.\n\nWe can solve the equations $ab = 52,$ $ac = 234,$ and $bc = 72$ to get $a = 13,$ $b = 4,$ and $c = 18,$ which do satisfy $2a^2 + 3b^2 + 5c^2 = 2006.$  Thus, such positive integers $a,$ $b,$ $c$ do exist.",
+        "level": 3,
+        "class": "intermediate_algebra",
+        "filename": "708"
+    },
+    {
+        "problem": "Compute $$1\\cdot 2^2+2\\cdot 3^2+3\\cdot4^2+\\cdots+19\\cdot 20^2.$$",
+        "solution": "We can write the sum as\n\\begin{align*}\n0 \\cdot 1^2 + 1 \\cdot 2^2 + 3 \\cdot 4^2 + \\dots + 19 \\cdot 20^2 &= \\sum_{n = 1}^{20} (n - 1) n^2 \\\\\n&= \\sum_{n = 1}^{20} (n^3 - n^2) \\\\\n&= \\sum_{n = 1}^{20} n^3 - \\sum_{n = 1}^{20} n^2 \\\\\n&= \\frac{20^2 \\cdot 21^2}{4} - \\frac{20 \\cdot 21 \\cdot 41}{6} \\\\\n&= 20 \\cdot 21 \\cdot \\left( \\frac{20 \\cdot 21}{4} - \\frac{41}{6} \\right) \\\\\n&= \\boxed{41230}.\n\\end{align*}",
+        "level": 3,
+        "class": "intermediate_algebra",
+        "filename": "330"
+    },
+    {
+        "problem": "Find the number of real roots of\n\\[2x^{2001} + 3x^{2000} + 2x^{1999} + 3x^{1998} + \\dots + 2x + 3 = 0.\\]",
+        "solution": "We can factor the given equation as\n\\[(2x + 3) x^{2000} + (2x + 3) x^{1998} + \\dots + (2x + 3) = (2x + 3)(x^{2000} + x^{1998} + \\dots + 1) = 0.\\]Thus, $x = -\\frac{3}{2}$ is a root.  Note that\n\\[x^{2000} + x^{1998} + \\dots + 1 \\ge 1\\]for all real $x,$ so the given polynomial has only $\\boxed{1}$ real root.",
+        "level": 4,
+        "class": "intermediate_algebra",
+        "filename": "1770"
+    },
+    {
+        "problem": "Compute the smallest positive integer $x$ greater than 9 such that\n\\[\\lfloor x \\rfloor - 19 \\left\\lfloor \\frac{x}{19} \\right\\rfloor = 9 = \\lfloor x \\rfloor - 89 \\left\\lfloor \\frac{x}{89} \\right\\rfloor.\\]",
+        "solution": "Let $q$ and $r$ be the remainder when $x$ is divided by 19, so $x = 19q + r,$ where $0 \\le r \\le 18.$  Then\n\\begin{align*}\n\\lfloor x \\rfloor - 19 \\left\\lfloor \\frac{x}{19} \\right\\rfloor &= 19q + r - 19 \\left\\lfloor \\frac{19q + r}{19} \\right\\rfloor \\\\\n&= 19q + r - 19 \\left\\lfloor q + \\frac{r}{19} \\right\\rfloor \\\\\n&= 19q + r - 19q \\\\\n&= r.\n\\end{align*}Thus, when $x$ is divided by 19, the remainder is 9.  In other words, $x$ is 9 more than a multiple of 19.\n\nSimilarly, when $x$ is 9 more than a multiple of 89.  Since 19 and 89 are relatively prime, $x$ is 9 greater than a multiple of $19 \\cdot 89 = 1691.$  Since $x$ is greater than 9, the smallest possible value of $x$ is $1691 + 9 = \\boxed{1700}.$",
+        "level": 4,
+        "class": "intermediate_algebra",
+        "filename": "1846"
+    },
+    {
+        "problem": "Let $(a_1,b_1),$ $(a_2,b_2),$ $\\dots,$ $(a_n,b_n)$ be all the ordered pairs $(a,b)$ of complex numbers with $a^2+b^2\\neq 0,$\n\\[a+\\frac{10b}{a^2+b^2}=5, \\quad \\text{and} \\quad b+\\frac{10a}{a^2+b^2}=4.\\]Find $a_1 + b_1 + a_2 + b_2 + \\dots + a_n + b_n.$",
+        "solution": "If $a = 0,$ then $\\frac{10}{b} = 5,$ so $b = 2,$ which does not satisfy the second equation.  If $b = 0,$ then $\\frac{10}{a} = 4,$ so $a = \\frac{5}{2},$ which does not satisfy the first equation.  So, we can assume that both $a$ and $b$ are nonzero.\n\nThen\n\\[\\frac{5 - a}{b} = \\frac{4 - b}{a} = \\frac{10}{a^2 + b^2}.\\]Hence,\n\\[\\frac{5b - ab}{b^2} = \\frac{4a - ab}{a^2} = \\frac{10}{a^2 + b^2},\\]so\n\\[\\frac{4a + 5b - 2ab}{a^2 + b^2} = \\frac{10}{a^2 + b^2},\\]so $4a + 5b - 2ab = 10.$  Then $2ab - 4a - 5b + 10 = 0,$ which factors as $(2a - 5)(b - 2) = 0.$  Hence, $a = \\frac{5}{2}$ or $b = 2.$\n\nIf $a = \\frac{5}{2},$ then\n\\[\\frac{5/2}{b} = \\frac{10}{\\frac{25}{4} + b^2}.\\]This simplifies to $4b^2 - 16b + 25 = 0.$  By the quadratic formula,\n\\[b = 2 \\pm \\frac{3i}{2}.\\]If $b = 2,$ then\n\\[\\frac{2}{a} = \\frac{10}{a^2 + 4}.\\]This simplifies to $a^2 - 5a + 4 = 0,$ which factors as $(a - 1)(a - 4) = 0,$ so $a = 1$ or $a = 4.$\n\nHence, the solutions are $(1,2),$ $(4,2),$ $\\left( \\frac{5}{2}, 2 + \\frac{3i}{2} \\right),$ $\\left( \\frac{5}{2}, 2 - \\frac{3i}{2} \\right),$ and the final answer is\n\\[1 + 2 + 4 + 2 + \\frac{5}{2} + 2 + \\frac{3i}{2} + \\frac{5}{2} + 2 - \\frac{3i}{2} = \\boxed{18}.\\]",
+        "level": 5,
+        "class": "intermediate_algebra",
+        "filename": "1079"
+    },
+    {
+        "problem": "The solution to the inequality\n\\[\\frac{x + c}{x^2 + ax + b} \\le 0\\]is $x \\in (-\\infty,-1) \\cup [1,2).$  Find $a + b + c.$",
+        "solution": "If the quadratic $x^2 + ax + b$ has no real roots, then $x^2 + ax + b > 0$ for all $x,$ which means the given inequality is equivalent to $x + c \\le 0,$ and the solution is $(-\\infty,-c].$  The solution given in the problem is not of this form, so the quadratic $x^2 + ax + b$ must have real roots, say $r$ and $s,$ where $r < s.$\n\nThen $x^2 + ax + b = (x - r)(x - s),$ and the inequality becomes\n\\[\\frac{x + c}{(x - r)(x - s)} \\le 0.\\]This inequality is satisfied for sufficiently low values of $x,$ but is not satisfied for $x = -1,$ which tells us that $r = -1.$  The inequality is now\n\\[\\frac{x + c}{(x + 1)(x - s)} \\le 0.\\]The inequality is then satisfied for $x = 1,$ which tells us $c = -1.$  Then the inequality is not satisfied for $x = 2,$ which tells us $s = 2.$  Thus, the inequality is\n\\[\\frac{x - 1}{(x + 1)(x - 2)} = \\frac{x - 1}{x^2 - x - 2} \\le 0,\\]so $a + b + c = (-1) + (-2) + (-1) = \\boxed{-4}.$",
+        "level": 5,
+        "class": "intermediate_algebra",
+        "filename": "1934"
+    }
+]

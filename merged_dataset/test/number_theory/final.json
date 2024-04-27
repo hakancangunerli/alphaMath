@@ -1,0 +1,72 @@
+[
+    {
+        "problem": "Find the remainder of $2^8$ when it is divided by 5.",
+        "solution": "$2^4 = 16 \\equiv 1 \\pmod{5}$, so $2^8 = 2^{2 \\cdot 4} = (2^4)^2 = 16^2 \\equiv 1^2 \\equiv \\boxed{1} \\pmod{5}$.",
+        "level": 1,
+        "class": "number_theory",
+        "filename": "102"
+    },
+    {
+        "problem": "Determine the remainder of 194 (mod 11).",
+        "solution": "$$194 = 17 \\cdot 11 + 7 \\implies 194 \\equiv \\boxed{7} \\pmod{11}.$$",
+        "level": 1,
+        "class": "number_theory",
+        "filename": "66"
+    },
+    {
+        "problem": "The digits $1$, $2$, $3$, $4$, $5$, $6$, $7$, and $9$ are used to form four two-digit prime numbers, with each digit used exactly once. What is the sum of these four primes?",
+        "solution": "The digits $2$, $4$, $5$, and $6$ cannot be the units digit of any two-digit prime, so these four digits must be the tens digits, and $1$, $3$, $7$, and $9$ are  the units digits. The sum is thus  $$\n10(2 + 4+ 5+ 6) + (1+3+7+9) = \\boxed{190}.\n$$(One set that satisfies the conditions is $\\{23, 47, 59, 61\\}$.)",
+        "level": 2,
+        "class": "number_theory",
+        "filename": "1119"
+    },
+    {
+        "problem": "In the addition problem  each letter represents a distinct digit. What is the numerical value of E? [asy]\nsize(50);\nlabel(\"G\",(0,0)); label(\"M\",(1,0)); label(\"M\",(2,0));\ndraw((-0.3,0.6)--(2.3,0.6));\nlabel(\"G\",(1,1)); label(\"M\",(2,1));\nlabel(\"E\",(0,2)); label(\"G\",(1,2)); label(\"M\",(2,2));\nlabel(\"+\",(0,1));\n[/asy]",
+        "solution": "We first look at the hundreds place. Since $E\\ne G$, it must be that $E+1=G$ in order to get $G$ in the hundreds place. Since a $1$ is carried over, we have $G+G=10+M$. Now we look at the units place. Either $M+M=M$ or $M+M=10+M$. In the second case, $2M=10+M\\qquad\\Rightarrow M=10$, which is not a possible digit. So it must be that $2M=M$, which is only possible if $M=0$. Now $2G=10\\qquad\\Rightarrow G=5$ and $E+1=G\\qquad\\Rightarrow E=4$. The numerical value of $E$ is $\\boxed{4}$. We can check that $450+50=500$, which matches the digits in the addition problem.",
+        "level": 2,
+        "class": "number_theory",
+        "filename": "523"
+    },
+    {
+        "problem": "What is the product (in base 10) of the first and last digits of the base-6 representation of $682_{10}$?",
+        "solution": "We begin by converting $682_{10}$ into base-6. We see that $6^3=216$ is the largest power of 6 that is less than 682, and that $3\\cdot216=648$ is the largest multiple of 216 that is less than 682. This leaves us with a remainder of $682-648=34$, which we can express as $5\\cdot6^1+4\\cdot6^0$. So, $682_{10}=3\\cdot6^3+0\\cdot6^2+5\\cdot{6^1}+4\\cdot6^0=3054_6$. The first and last digits are 3 and 4, respectively, making the product of the two equal to $\\boxed{12}$.",
+        "level": 3,
+        "class": "number_theory",
+        "filename": "1033"
+    },
+    {
+        "problem": "What's the largest eight-digit base 2 integer?  Express your answer in base 10.",
+        "solution": "The largest eight-digit base 2 integer is 1 less than the smallest nine-digit base 2 integer, which is $$ 100000000_{2} = 1 \\cdot 2^8 = 256. $$Thus, the largest eight-digit base 2 integer is $256 - 1 = \\boxed{255}$.",
+        "level": 3,
+        "class": "number_theory",
+        "filename": "691"
+    },
+    {
+        "problem": "Convert the repeating decimal $3.283283283\\ldots$ to an improper fraction.",
+        "solution": "We can express the decimal as a geometric series, with first term $.283$, and common ratio $.001$.\n\nLet S denote the sum of this infinite geometric series:\n\n$S = .283 + .000283 + \\dots$\n\nThen,\n\n$1000S = 283.283283283\\dots$\n\nThus,\n\n$999S = 283$\n\nand\n\n$S = \\frac{283}{999}$\n\nThus, $3.283283\\dots = 3 + \\frac{283}{999} = \\boxed{\\frac{3280}{999}}$",
+        "level": 4,
+        "class": "number_theory",
+        "filename": "1092"
+    },
+    {
+        "problem": "Find the smallest positive integer $k$ such that, for every positive integer $n$, $6n+k$ is relatively prime to each of $6n+3$, $6n+2$, and $6n+1$.",
+        "solution": "Obviously, we have that $k > 3$, because otherwise two of the integers would be identical and not be relatively prime. Start by testing $k=4$. $6n+4$ and $6n+3$ are relatively prime because they are consecutive integers, but $6n+4$ and $6n+2$ are both even and are therefore not relatively prime. The next candidate to test is $k=5$. Firstly, we have that\n\\begin{align*}\n\\gcd(6n+5, 6n+3) &= \\gcd(6n+3, (6n+5)-(6n+3)) \\\\ &= \\gcd(6n+3, 2). \n\\end{align*}Since $6n+3$ is always odd, the two integers $6n+5$ and $6n+3$ are relatively prime.\nSecondly,\n\\begin{align*}\n\\gcd(6n+5, 6n+2) &= \\gcd(6n+2, (6n+5)-(6n+2)) \\\\&= \\gcd(6n+2, 3). \n\\end{align*}Note that $6n+3$ is always divisible by 3, so $6n+2$ is never divisible by 3. As a result, we have that $6n+5$ and $6n+2$ are relatively prime. Finally,\n\\begin{align*}\n\\gcd(6n+5, 6n+1) &= \\gcd(6n+1, (6n+5)-(6n+1)) \\\\ &= \\gcd(6n+1, 4). \n\\end{align*}Note that $6n+1$ is always odd, so $6n+5$ and $6n+1$ are also relatively prime. Therefore, the smallest positive integer $k$ that permits $6n+k$ to be relatively prime with each of $6n+3$, $6n+2$, and $6n+1$ is $k = \\boxed{5}$.",
+        "level": 4,
+        "class": "number_theory",
+        "filename": "435"
+    },
+    {
+        "problem": "Recall that an integer $d$ is said to be a divisor of an integer $a$ if $a/d$ is also an integer. For how many integers $a$ between $-200$ and $-1$ inclusive is the product of the divisors of $a$ negative?",
+        "solution": "The product of the (positive and negative) divisors of an integer $a$ is negative if $a$ has an odd number of negative divisors. It follows that $-a$ must have an odd number of positive divisors. However, for every positive divisor $d$ of $-a$, then $(-a)/d$ is also a positive divisor of $-a$, so that the positive divisors of $-a$ can be paired up. The exception is if $-a$ is a perfect square, in which case $\\sqrt{-a}$ will not be paired up with another divisor. There are $\\boxed{14}$ perfect squares between $1$ and $200$: $1^2, 2^2, 3^2, \\cdots, 14^2 = 196$.",
+        "level": 5,
+        "class": "number_theory",
+        "filename": "440"
+    },
+    {
+        "problem": "Euler discovered that the polynomial $p(n) = n^2 - n + 41$ yields prime numbers for many small positive integer values of $n$. What is the smallest positive integer $n$ for which $p(n)$ and $p(n+1)$ share a common factor greater than $1$?",
+        "solution": "We find that $p(n+1) = (n+1)^2 - (n+1) + 41 = n^2 + 2n + 1 - n - 1 + 41 = n^2 + n + 41$. By the Euclidean algorithm, \\begin{align*} &\\text{gcd}\\,(p(n+1),p(n)) \\\\\n&\\qquad = \\text{gcd}\\,(n^2+n+41,n^2 - n+41) \\\\\n&\\qquad = \\text{gcd}\\,(n^2 + n + 41 - (n^2 - n + 41), n^2 - n + 41) \\\\\n&\\qquad = \\text{gcd}\\,(2n,n^2-n+41). \\end{align*}Since $n^2$ and $n$ have the same parity (that is, they will both be even or both be odd), it follows that $n^2 - n + 41$ is odd. Thus, it suffices to evaluate $\\text{gcd}\\,(n,n^2 - n + 41) = \\text{gcd}\\,(n,n^2-n+41 - n(n-1)) = \\text{gcd}\\,(n,41)$. The smallest desired positive integer is then $n = \\boxed{41}$.\n\nIn fact, for all integers $n$ from $1$ through $40$, it turns out that $p(n)$ is a prime number.",
+        "level": 5,
+        "class": "number_theory",
+        "filename": "618"
+    }
+]
