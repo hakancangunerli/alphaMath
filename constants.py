@@ -6,7 +6,7 @@ LLMS_FROM_GROQ = [
     "gemma-7b-it",
 ]
 LLMS_FROM_OPENAI = ["gpt-3.5-turbo", "gpt-4-turbo"]
-CODE_LLMS = ["codegemma"]
+CODE_LLMS = ["codellama:7b-python-q6_K"]
 LLMS_FROM_GCP = ["code-bison@002"]
 LLMS = LLMS_FROM_GROQ + LLMS_FROM_OPENAI + CODE_LLMS + LLMS_FROM_GCP
 
