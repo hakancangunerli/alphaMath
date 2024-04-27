@@ -41,7 +41,7 @@ def subsample(dataset, sample_size):
 
 def test_accuracy(
     data_class: str,
-    num_problems: int,
+    dataset: list,
     coding_llm: str,
     main_solver_llm: str,
     judging_llm: str,
@@ -52,7 +52,7 @@ def test_accuracy(
     """
     Input:
         data_class: the class of the problem
-        num_problems: the total number of problems to test, *before* seiving its level. If 0, test all problems.
+        dataset: the dataset to test
         levels: the level of the problem
         full_method: True if use the end-to-end method (i.e. with RAG and code LLM),
                      False if use the direct method
@@ -78,16 +78,6 @@ def test_accuracy(
     # num of tested problems at each level
     correct_num = [0, 0, 0, 0, 0]
     # num of correctly-solved problems at each level
-
-    dataset_path = os.path.join(
-        os.getcwd(), "merged_dataset", "test", data_class, "merged.json"
-    )
-    dataset = json.load(open(dataset_path))
-    assert isinstance(num_problems, int) and 0 <= num_problems <= len(
-        dataset
-    ), "Invalid number of problem"
-    if num_problems:  # subsample num_problems problems
-        dataset = subsample(dataset, num_problems)
 
     logging.info(
         f"Testing on dataset '{data_class}' with levels {str(sorted(set(levels)))}."
@@ -126,10 +116,23 @@ def test_accuracy(
 
 
 if __name__ == "__main__":
+    # set the data class and the number of problems to test
+    data_class = "geometry"
+    num_problems = 10
+
+    dataset_path = os.path.join(
+        os.getcwd(), "merged_dataset", "test", data_class, "merged.json"
+    )
+    dataset = json.load(open(dataset_path))
+    assert isinstance(num_problems, int) and 0 <= num_problems <= len(
+        dataset
+    ), "Invalid number of problem"
+    if num_problems:  # subsample num_problems problems
+        dataset = subsample(dataset, num_problems)
     print(
         test_accuracy(
             data_class="geometry",
-            num_problems=10,
+            dataset=dataset,
             coding_llm="llama3-70b-8192",
             main_solver_llm="llama3-70b-8192",
             judging_llm="llama3-70b-8192",
