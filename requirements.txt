@@ -8,3 +8,5 @@ ragas
 sympy
 sentence-transformers
 chromadb
+google-cloud-aiplatform
+jupyter

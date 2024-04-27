@@ -7,7 +7,8 @@ LLMS_FROM_GROQ = [
 ]
 LLMS_FROM_OPENAI = ["gpt-3.5-turbo", "gpt-4-turbo"]
 CODE_LLMS = ["codegemma"]
-LLMS = LLMS_FROM_GROQ + LLMS_FROM_OPENAI + CODE_LLMS
+LLMS_FROM_GCP = ["code-bison@002"]
+LLMS = LLMS_FROM_GROQ + LLMS_FROM_OPENAI + CODE_LLMS + LLMS_FROM_GCP
 
 # Making the default judge LLM to llama3-8b-8192 for experiments as gpt-3.5-turbo incur costs
 # TODO: change back to gpt-3.5-turbo for production

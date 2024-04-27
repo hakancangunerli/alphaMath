@@ -1,3 +1,4 @@
+from itertools import groupby
 from constants import ALL_PROBLEM_CLASSES
 from solve_prob_end2end import solve_prob_end2end
 from logging_config import setup_logging
@@ -8,11 +9,35 @@ import random
 
 
 def subsample(dataset, sample_size):
-    assert isinstance(sample_size, int) and 0 <= sample_size <= len(
-        dataset
-    ), "Invalid number of problem"
-    return random.sample(dataset, sample_size) if sample_size else dataset
+    assert isinstance(sample_size, int) and 0 <= sample_size <= len(dataset), "Invalid sample size"
 
+    # Sort the dataset by 'level' and then group by 'level'.
+    dataset_sorted = sorted(dataset, key=lambda x: x["level"])
+    groups = [list(g) for _, g in groupby(dataset_sorted, key=lambda x: x["level"])]
+
+    sampled_data = []
+    total_groups = len(groups)
+
+    # Calculate distribution per level based on the rules:
+    distribution = []
+    if sample_size <= total_groups:
+        distribution = [1 if i < sample_size else 0 for i in range(total_groups)]
+    else:
+        base = sample_size // total_groups
+        extra = sample_size % total_groups
+        distribution = [base + (1 if i < extra else 0) for i in range(total_groups)]
+
+    # Sample according to the distribution plan
+    count = 1
+    for dist, group in zip(distribution, groups):
+        print(f"Level {count}: {dist} problem(s) sampled")
+        if dist <= len(group):
+            sampled_data.extend(random.sample(group, dist))
+        else:
+            sampled_data.extend(group)  # Take all if not enough to meet distribution
+        count += 1
+
+    return sampled_data
 
 def test_accuracy(
     data_class: str,
@@ -35,6 +60,8 @@ def test_accuracy(
     Output:
         a list of accuracy ( = number of correctly-solved problems / number of all problems ) at each level
     """
+
+    print(f"Testing on dataset '{data_class}' with levels {str(sorted(set(levels)))}.")
 
     setup_logging(logging_level)
 
@@ -60,7 +87,7 @@ def test_accuracy(
         dataset
     ), "Invalid number of problem"
     if num_problems:  # subsample num_problems problems
-        dataset = random.sample(dataset, num_problems)
+        dataset = subsample(dataset, num_problems)
 
     logging.info(
         f"Testing on dataset '{data_class}' with levels {str(sorted(set(levels)))}."
@@ -90,11 +117,11 @@ def test_accuracy(
             if is_correct:
                 correct_num[level - 1] += 1
 
-        except:
-            logging.warning("Failed in judging. This problem will not be counted.")
+        except Exception as e:
+            logging.warning(f"Error in solving or judging: {e}. This problem will not be counted.")
             prob_num[level - 1] -= 1
 
-    return list(map(lambda x, y: x / y if y != 0 else 0, correct_num, prob_num))
+    return list(map(lambda x, y: round(x / y, 2) if y != 0 else 0, correct_num, prob_num))
     # accuracy at each level
 
 

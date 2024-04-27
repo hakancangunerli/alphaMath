@@ -2,3 +2,4 @@ api_key:
     openai: ""
     llama: ""
     groq: ""
+    gcp-project: ""

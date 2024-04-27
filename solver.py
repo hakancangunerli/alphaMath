@@ -80,13 +80,13 @@ def solve_problem(
     if coding_hint is not None:
         user_query += f"""We've also prepared Python scripts to address this problem. Upon execution, these codes yield `{coding_hint}`. While the output may not be entirely accurate, it could serve as a helpful tool to validate your answer. Exercise caution when utilizing this resource.\n"""
 
-    logging.debug(f"query sent to {solver_llm}:\n", instruct_query + user_query)
+    logging.debug(f"query sent to {solver_llm}:\n {instruct_query + user_query}")
 
     response = call_llm_api(
         model=solver_llm, system_query=instruct_query, user_query=user_query
     )
     logging.info("Problem solved successfully" if response else "Problem not solved")
-    logging.debug(f"response from {solver_llm}:\n", response)
+    logging.debug(f"response from {solver_llm}:\n {response}")
 
     return response
 
@@ -127,8 +127,8 @@ def solve_problem_by_coding(
     response = extract_code_blocks(response)
     response.replace("```", "")
     resp = remove_python_header(response)
-    logging.debug(f"query sent to {solver_llm}:\n", instruct_query + user_query)
-    logging.debug(f"response from {solver_llm}:\n", resp)
+    logging.debug(f"query sent to {solver_llm}:\n {instruct_query + user_query}")
+    logging.debug(f"response from {solver_llm}:\n {resp}")
 
     # Attempt to execute the code and capture the output
     remaining_attempt = max_attempt
@@ -143,19 +143,19 @@ def solve_problem_by_coding(
             remaining_attempt -= 1
             continue
         error = f"Error in code execution: {code_result}"
-        logging.error(f"{error}. Retrying...")
+        logging.warning(f"{error}. Retrying...")
         user_query += f"\nYou provided this response.\n{resp}\nHowever, execution of the response resulted in an error.\n{error}\nPlease rectify the error and attempt again. ONLY the corrected code WITHOUT any error is required. NO explanations are needed within the code; however, if you choose to include any, they must be in the form of COMMENTS in Python. Using SymPy for symbolic computation is recommended.\n\n"
-        logging.debug(f"query sent to {solver_llm}: ", instruct_query + user_query)
+        logging.debug(f"query sent to {solver_llm}:\n {instruct_query + user_query}")
         response = call_llm_api(
             model=solver_llm, system_query=instruct_query, user_query=user_query
         )
         response = extract_code_blocks(response)
         response.replace("```", "")
         resp = remove_python_header(response)
-        logging.debug(f"response from {solver_llm}:\n", resp)
+        logging.debug(f"response from {solver_llm}:\n {resp}")
         remaining_attempt -= 1
     if remaining_attempt == 0:
-        logging.error(f"Consistent error in code execution: {code_result}. Will mark the problem as unsolved.")
+        logging.warning(f"Consistent error in code execution: {code_result}. Will try to solve the problem only using main solver LLM (if provided) or mark it as unsolved.")
         return
     else:
         return code_result

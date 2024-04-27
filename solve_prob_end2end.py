@@ -64,7 +64,7 @@ def solve_prob_end2end(
             rag_hint=rag_result,
             logging_level=logging_level,
         )
-        logging.debug("The result from coding:", coding_res)
+        logging.debug(f"The result from coding: {coding_res}")
     else:
         logging.info("No coding LLM is provided.")
 
@@ -80,7 +80,7 @@ def solve_prob_end2end(
             coding_hint=coding_res,
             logging_level=logging_level,
         )
-        logging.debug("The result from the main solver:", main_solver_res)
+        logging.debug(f"The result from the main solver: {main_solver_res}")
     else:
         logging.info("No main solver LLM is provided.")
 
@@ -94,11 +94,11 @@ def solve_prob_end2end(
             logging.warning("Invalid response from the judging LLM. Retrying...")
             continue
 
-    logging.error(
+    logging.warning(
         f"Failed in judging correctness for problem for {max_rejudge} times. We will not count this problem."
     )
     raise ValueError(
-        "Failed in judging correctness for problem for {max_rejudge} times. We will not count this problem."
+        f"Failed in judging correctness for problem for {max_rejudge} times. We will not count this problem."
     )
 
 
