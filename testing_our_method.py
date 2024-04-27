@@ -76,6 +76,13 @@ def test_accuracy(
 
     prob_num = [0, 0, 0, 0, 0]
     # num of tested problems at each level
+
+    fail_coding_num = [0, 0, 0, 0, 0]
+    # num of failed files (i.e., can't generate the answer) at each level
+
+    fail_judging_num = [0, 0, 0, 0, 0]
+    # num of failed files (i.e., can't judge the correctness) at each level
+
     correct_num = [0, 0, 0, 0, 0]
     # num of correctly-solved problems at each level
 
@@ -97,21 +104,29 @@ def test_accuracy(
 
         prob = dataset[i]["problem"]
         sol = dataset[i]["solution"]
-        try:
-            is_correct = (
-                solve_prob_end2end(
-                    problem=prob, data_class=data_class, correct_solution=sol, coding_llm=coding_llm, main_solver_llm=main_solver_llm, judging_llm=judging_llm, use_rag=use_rag, logging_level=logging_level
-                )
+        # try:
+        is_correct, fail_coding, fail_judging = (
+            solve_prob_end2end(
+                problem=prob, data_class=data_class, correct_solution=sol, coding_llm=coding_llm, main_solver_llm=main_solver_llm, judging_llm=judging_llm, use_rag=use_rag, logging_level=logging_level
             )
-            logging.info(f"[{i+1}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level}): {'correct' if is_correct else 'incorrect'}")
-            if is_correct:
-                correct_num[level - 1] += 1
+        )
+        logging.info(f"[{i+1}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level}): {'correct' if is_correct else 'incorrect'}")
+        if fail_coding:
+            fail_coding_num[level - 1] += 1
 
-        except Exception as e:
-            logging.warning(f"Error in solving or judging: {e}. This problem will not be counted.")
-            prob_num[level - 1] -= 1
+        if fail_judging:
+            fail_judging_num[level - 1] += 1
+            # prob_num[level - 1] -= 1
 
-    return list(map(lambda x, y: round(x / y, 2) if y != 0 else 0, correct_num, prob_num))
+        if is_correct:
+            correct_num[level - 1] += 1
+
+        # except Exception as e:
+        #     logging.warning(f"Error in solving or judging: {e}. This problem will not be counted.")
+        #     prob_num[level - 1] -= 1
+
+    return correct_num, prob_num, fail_coding_num, fail_judging_num
+    # return list(map(lambda x, y: round(x / y, 2) if y != 0 else 0, correct_num, prob_num))
     # accuracy at each level
 
 

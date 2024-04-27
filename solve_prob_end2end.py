@@ -32,6 +32,8 @@ def solve_prob_end2end(
         ValueError if the judging LLM's response is invalid for max_rejudge times
     """
 
+    fail_coding, fail_judging = False, False
+
     setup_logging(logging_level)
 
     if use_rag:
@@ -65,6 +67,8 @@ def solve_prob_end2end(
             logging_level=logging_level,
         )
         logging.debug(f"The result from coding: {coding_res}")
+        if coding_res is None:
+            fail_coding = True
     else:
         logging.info("No coding LLM is provided.")
 
@@ -89,17 +93,21 @@ def solve_prob_end2end(
         try:
             return judge_correctness(
                 prob=problem, sol=correct_solution, ans=main_solver_res, llm=judging_llm, logging_level=logging_level
-            )
+            ), fail_coding, fail_judging
         except ValueError:
             logging.warning("Invalid response from the judging LLM. Retrying...")
             continue
 
+    fail_judging = True
+    with open("failed_problems.txt", "a") as f:
+        f.write(f"Correct Solution: \n```{correct_solution}```\nLLM Response:\n```{main_solver_res}\n```\n====================\n")
     logging.warning(
         f"Failed in judging correctness for problem for {max_rejudge} times. We will not count this problem."
     )
-    raise ValueError(
-        f"Failed in judging correctness for problem for {max_rejudge} times. We will not count this problem."
-    )
+    return False, fail_coding, fail_judging
+    # raise ValueError(
+    #     f"Failed in judging correctness for problem for {max_rejudge} times. We will not count this problem."
+    # )
 
 
 # def solve_prob_directly(
