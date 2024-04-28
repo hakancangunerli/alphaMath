@@ -9,7 +9,9 @@ import random
 
 
 def subsample(dataset, sample_size):
-    assert isinstance(sample_size, int) and 0 <= sample_size <= len(dataset), "Invalid sample size"
+    assert isinstance(sample_size, int) and 0 <= sample_size <= len(
+        dataset
+    ), "Invalid sample size"
 
     # Sort the dataset by 'level' and then group by 'level'.
     dataset_sorted = sorted(dataset, key=lambda x: x["level"])
@@ -38,6 +40,7 @@ def subsample(dataset, sample_size):
         count += 1
 
     return sampled_data
+
 
 def test_accuracy(
     data_class: str,
@@ -90,7 +93,10 @@ def test_accuracy(
         f"Testing on dataset '{data_class}' with levels {str(sorted(set(levels)))}."
     )
 
-    for i in range(len(dataset)):
+    n_dataset = len(dataset)
+
+    for i in range(n_dataset):
+        print(f"Percentage complete: {i * 100 / n_dataset}%")
         level = dataset[i]["level"]
         logging.info(
             f"Working on [{i+1}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level})..."
@@ -105,12 +111,20 @@ def test_accuracy(
         prob = dataset[i]["problem"]
         sol = dataset[i]["solution"]
         # try:
-        is_correct, fail_coding, fail_judging = (
-            solve_prob_end2end(
-                problem=prob, data_class=data_class, correct_solution=sol, coding_llm=coding_llm, main_solver_llm=main_solver_llm, judging_llm=judging_llm, use_rag=use_rag, logging_level=logging_level
-            )
+        is_correct, fail_coding, fail_judging = solve_prob_end2end(
+            problem=prob,
+            data_class=data_class,
+            correct_solution=sol,
+            coding_llm=coding_llm,
+            main_solver_llm=main_solver_llm,
+            coding_max_attempt=3,
+            judging_llm=judging_llm,
+            use_rag=use_rag,
+            logging_level=logging_level,
         )
-        logging.info(f"[{i+1}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level}): {'correct' if is_correct else 'incorrect'}")
+        logging.info(
+            f"[{i+1}/{len(dataset)}] Problem {dataset[i]['filename']} (level {level}): {'correct' if is_correct else 'incorrect'}"
+        )
         if fail_coding:
             fail_coding_num[level - 1] += 1
 
