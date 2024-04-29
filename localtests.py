@@ -8,7 +8,7 @@ with open("config.yaml") as f:
     cfg = yaml.safe_load(f)
 
 class LocalTests(unittest.TestCase):
-    @unittest.skipIf(cfg["api_key"]["groq"] is "", "Open API key not set")
+    @unittest.skipIf(cfg["api_key"]["groq"] == "", "Groq API key not set")
     def test_call_apis_groq(self):
         from call_apis import call_llm_api
 
@@ -21,7 +21,7 @@ class LocalTests(unittest.TestCase):
         self.assertTrue(resp)
         self.assertIsInstance(resp, str)
 
-    @unittest.skipIf(cfg["api_key"]["openai"] is "", "Groq API key not set")
+    @unittest.skipIf(cfg["api_key"]["openai"] == "", "Open API key not set")
     def test_call_apis_openai(self):
         from call_apis import call_llm_api
 
@@ -89,7 +89,7 @@ class LocalTests(unittest.TestCase):
         resp = solve_problem_by_coding(
             problem="What is the solution to the equation $x^2-4=0$?",
             data_class="algebra",
-            solver_llm="codegemma",
+            solver_llm="deepseek-coder:6.7b-instruct-q8_0",
         )
         # check if the response is not empty and returns a string
         self.assertTrue(resp)

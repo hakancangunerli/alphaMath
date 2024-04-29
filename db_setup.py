@@ -51,7 +51,7 @@ def test_rag():
     test_data = load_json_files("merged_dataset/test")
 
     if not test_data:
-        print("No train data loaded.")
+        raise Exception("No train data loaded.")
     else:
         #Load the data into Chroma
         db = get_rag()
@@ -91,12 +91,12 @@ def test_rag():
                 answer_relevancy,
             ],
         )
-        result.to_pandas().to_csv("results.csv")
+        result.to_pandas().to_csv("rag_results.csv")
 
 def load_rag():
     data = load_json_files("merged_dataset/train")
     if not data:
-        print("No train data loaded.")
+        raise Exception("No train data loaded.")
     else:
         documents = split_text(data)
         print("Number of documents:", len(documents))

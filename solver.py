@@ -53,6 +53,7 @@ def solve_problem(
     rag_hint: str = None,
     coding_hint: str = None,
     logging_level=logging.INFO,
+    test_mode=False
 ):
     """
     parameters:
