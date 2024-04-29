@@ -119,7 +119,7 @@ def load_rag():
             #     print("Solution:", doc.metadata["solution"])
             #     print("---")
         except:
-            print("Rag Load Corrupted, please reload Rag")
+            raise Exception("Rag Load Corrupted, please reload Rag")
 
 def get_rag():
     embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")

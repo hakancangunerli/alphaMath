@@ -107,6 +107,15 @@ class LocalTests(unittest.TestCase):
         # check if the response is true
         self.assertTrue(resp)
 
+    def test_rag_setup(self):
+        from db_setup import load_rag, test_rag
+
+        try:
+            load_rag()
+            test_rag()
+        except:
+            self.assertTrue(False)
+
 
 if __name__ == "__main__":
     unittest.main()
