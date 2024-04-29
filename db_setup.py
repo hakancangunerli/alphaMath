@@ -109,15 +109,15 @@ def load_rag():
             db = Chroma.from_documents(
                 documents, embedding=embedding_function, persist_directory="./chroma_db"
             )
-            query = data[0]["problem"]
-            solution = data[0]["solution"]
-            print("Original solution:", solution)
-            docs = db.similarity_search(query)
-            # Print the results
-            for doc in docs:
-                print(doc.page_content)
-                print("Solution:", doc.metadata["solution"])
-                print("---")
+            # query = data[0]["problem"]
+            # solution = data[0]["solution"]
+            # print("Original solution:", solution)
+            # docs = db.similarity_search(query)
+            # # Print the results
+            # for doc in docs:
+            #     print(doc.page_content)
+            #     print("Solution:", doc.metadata["solution"])
+            #     print("---")
         except:
             print("Rag Load Corrupted, please reload Rag")
 
