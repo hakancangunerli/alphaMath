@@ -1,5 +1,5 @@
 # CS7643 TEAM PROJECT - ALPHAMATH
-TEAM MEMEBERS:
+TEAM MEMBERS:
 1) Raniya Syeda (rsyeda6@gatech.edu)
 2) Tanmay Das (tdas32@gatech.edu)
 3) Wei Guo (wei.guo@gatech.edu)
