@@ -1,3 +1,7 @@
+"""
+This module contains functions to solve math problems using language models.
+"""
+
 import io
 import re
 import sys
@@ -53,7 +57,7 @@ def solve_problem(
     rag_hint: str = None,
     coding_hint: str = None,
     logging_level=logging.INFO,
-    test_mode=False
+    test_mode=False,
 ):
     """
     parameters:
@@ -156,7 +160,9 @@ def solve_problem_by_coding(
         logging.debug(f"response from {solver_llm}:\n {resp}")
         remaining_attempt -= 1
     if remaining_attempt == 0:
-        logging.warning(f"Consistent error in code execution: {code_result}. Will try to solve the problem only using main solver LLM (if provided) or mark it as unsolved.")
+        logging.warning(
+            f"Consistent error in code execution: {code_result}. Will try to solve the problem only using main solver LLM (if provided) or mark it as unsolved."
+        )
         return
     else:
         return code_result

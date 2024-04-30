@@ -41,9 +41,10 @@ class LLMCLients:
         if cls._instance is None:
             with open("config.yaml") as f:
                 cfg = yaml.safe_load(f)
-            cls.openai_client = openai.OpenAI(api_key = cfg["api_key"]["openai"])
+            cls.openai_client = openai.OpenAI(api_key=cfg["api_key"]["openai"])
             cls.groq_client = Groq(api_key=cfg["api_key"]["groq"])
         return cls._instance
+
 
 class VertexAIInit:
     _instance = None
@@ -52,6 +53,7 @@ class VertexAIInit:
         # Singleton pattern, sets up vertex ai
         if cls._instance is None:
             import vertexai
+
             cls.gcp_project = cfg["api_key"]["gcp-project"]
             vertexai.init(project=cls.gcp_project, location="us-central1")
         return cls._instance
@@ -96,15 +98,15 @@ def call_llm_api(
     elif model in LLMS_FROM_GCP:
         VertexAIInit()
         from vertexai.language_models import CodeGenerationModel
+
         parameters = {
             "candidate_count": 1,
             "max_output_tokens": 1024,
-            "temperature": 0.1
+            "temperature": 0.1,
         }
         gcp_model = CodeGenerationModel.from_pretrained(model)
         return gcp_model.predict(
-            prefix = f"""{system_query}\n{user_query}""",
-            **parameters
+            prefix=f"""{system_query}\n{user_query}""", **parameters
         ).text
     else:
         t = time.time()

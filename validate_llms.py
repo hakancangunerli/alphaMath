@@ -1,3 +1,7 @@
+"""
+This file contains the function to validate the solver LLM.
+"""
+
 from judge_correctness import judge_correctness
 from constants import ALL_PROBLEM_CLASSES
 import re
@@ -79,8 +83,6 @@ def validate_solver_llm(
         if not ans:
             logging.warning(f"Failed in solving problem {dataset[i]['filename']}.")
             failed_num[level - 1] += 1
-            # retry_files.append(i)
-            # prob_num[level - 1] -= 1
             continue
 
         for _ in range(max_rejudge):
@@ -106,69 +108,7 @@ def validate_solver_llm(
         )
         logging.info(f"Failed problem numbers at each level so far: {failed_num}")
 
-    # # Retry the files that had errors
-    # if retry_files:
-    #     print(f"Retrying {len(retry_files)} files")
-    #     for i in retry_files:
-    #         if test_mode:
-    #             print(f"Again testing problem {dataset[i]['filename']} of {data_class}")
-
-    #         level = dataset[i]["level"]
-    #         prob_num[level - 1] += 1
-    #         prob = dataset[i]["problem"]
-    #         sol = dataset[i]["solution"]
-    #         try:
-    #             is_correct = judge_correctness(prob, sol, ans, llm=judging_llm)
-    #             if is_correct:
-    #                 correct_num[level - 1] += 1
-    #         except ValueError:
-    #             print(
-    #                 f"Error in judging correctness for problem {dataset[i]['filename']}"
-    #             )
-    #             prob_num[level - 1] -= 1
-
-    #     if test_mode:
-    #         print(
-    #             f"Problem numbers at each level attempted to solve so far: {prob_num}"
-    #         )
-    #         print(
-    #             f"Correctly-solved problem numbers at each level so far: {correct_num}"
-    #         )
-
     return list(map(lambda x, y: x / y if y != 0 else 0, correct_num, prob_num)), list(
         map(lambda x, y: x / y if y != 0 else 0, failed_num, prob_num)
     )
     # accuracy at each level and failed rate at each level
-
-
-if __name__ == "__main__":
-    pass
-#     import os
-#     import json
-#     import random
-#     ROOT_PATH = os.getcwd()
-#     from constants import DEFAULT_JUDGE_LLM, CODE_LLMS
-#     from solver import solve_problem_by_coding
-#     def subsample(dataset, sample_size):
-#         return random.sample(dataset, sample_size)
-#     ALGEBRA_DATASET_PATH = os.path.join(
-#         ROOT_PATH, "merged_dataset", "train", "algebra", "merged.json"
-#     )
-#     ALGEBRA_DATASET = json.load(open(ALGEBRA_DATASET_PATH))
-#     SUBSAMPLED_ALGEBRA_DATASET = subsample(ALGEBRA_DATASET, 5)
-
-#     for llm in ["gpt-3.5-turbo"]:
-#         acc, fail = validate_solver_llm(
-#             solve_method=solve_problem_by_coding,
-#             data_class="algebra",
-#             dataset=SUBSAMPLED_ALGEBRA_DATASET,
-#             solver_llm=llm,
-#             levels=[1, 2, 3, 4, 5],
-#             judging_llm="gpt-3.5-turbo",
-#             test_mode=True
-#         )
-#         # Weighted average of accuracy with most weightage to the highest level
-#         mean_acc = sum([acc[i] * i for i in range(1, len(acc))]) / sum(range(1, len(acc)))
-#         print(f"Weighted Mean Accuracy for {llm}: {mean_acc}")
-#         mean_fail = sum([fail[i] * i for i in range(1, len(fail))]) / sum(range(1, len(fail)))
-#         print(f"Weighted Mean Fail Rate for {llm}: {mean_fail}")

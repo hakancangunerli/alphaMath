@@ -1,3 +1,7 @@
+"""
+This script is used to test the accuracy of our method on a dataset.
+"""
+
 from itertools import groupby
 from constants import ALL_PROBLEM_CLASSES
 from solve_prob_end2end import solve_prob_end2end

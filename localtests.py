@@ -1,3 +1,8 @@
+"""
+This file contains the unit tests for the local environment. The tests are run using the following command:
+python -m unittest localtests.py
+"""
+
 import json
 import os
 import random
@@ -6,6 +11,7 @@ import yaml
 
 with open("config.yaml") as f:
     cfg = yaml.safe_load(f)
+
 
 class LocalTests(unittest.TestCase):
     @unittest.skipIf(cfg["api_key"]["groq"] == "", "Groq API key not set")

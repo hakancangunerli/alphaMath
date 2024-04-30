@@ -1,6 +1,10 @@
+"""
+ This script is used to setup the database for the RAG model.
+"""
 import json
 import os
 from langchain.text_splitter import CharacterTextSplitter
+
 # from langchain.vectorstores import Chroma
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings.sentence_transformer import (
@@ -47,19 +51,20 @@ def split_text(data):
 
     return documents
 
+
 def test_rag():
     test_data = load_json_files("merged_dataset/test")
 
     if not test_data:
         raise Exception("No train data loaded.")
     else:
-        #Load the data into Chroma
+        # Load the data into Chroma
         db = get_rag()
         questions = []
         answers = []
         ground_truths = []
         contexts = []
-        
+
         for question in test_data[:9]:
 
             # query = "What is the formula for the area of a circle?"
@@ -78,12 +83,12 @@ def test_rag():
             "question": questions,
             "answer": answers,
             "ground_truth": ground_truths,
-            "contexts": contexts
+            "contexts": contexts,
         }
 
         dataset = Dataset.from_dict(final_data)
         result = evaluate(
-            dataset = dataset, 
+            dataset=dataset,
             metrics=[
                 context_precision,
                 # context_recall,
@@ -92,6 +97,7 @@ def test_rag():
             ],
         )
         result.to_pandas().to_csv("rag_results.csv")
+
 
 def load_rag():
     data = load_json_files("merged_dataset/train")
@@ -102,10 +108,12 @@ def load_rag():
         print("Number of documents:", len(documents))
 
         # Create the open-source embedding function
-        embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+        embedding_function = SentenceTransformerEmbeddings(
+            model_name="all-MiniLM-L6-v2"
+        )
 
         try:
-            #Load the data into Chroma
+            # Load the data into Chroma
             db = Chroma.from_documents(
                 documents, embedding=embedding_function, persist_directory="./chroma_db"
             )
@@ -121,14 +129,18 @@ def load_rag():
         except:
             raise Exception("Rag Load Corrupted, please reload Rag")
 
+
 def get_rag():
     embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
     try:
-        #Load the data into Chroma
-        db = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
+        # Load the data into Chroma
+        db = Chroma(
+            persist_directory="./chroma_db", embedding_function=embedding_function
+        )
         return db
     except:
         raise Exception("Rag Load Corrupted, please reload Rag")
+
 
 # load_rag()
 # test_rag()

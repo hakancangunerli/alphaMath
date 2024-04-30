@@ -1,3 +1,6 @@
+"""
+This file contains all the constants used in the project.
+"""
 LLMS_FROM_GROQ = [
     "llama3-70b-8192",
     "llama3-8b-8192",

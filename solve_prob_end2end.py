@@ -1,3 +1,10 @@
+"""
+This script provides the end-to-end process to solve a problem:
+1. Retrieve information from RAG
+2. Solve the problem by coding
+3. Solve the problem by the main LLM using the hint from RAG and the result from coding
+"""
+
 from judge_correctness import judge_correctness
 from solver import solve_problem_by_coding, solve_problem
 from db_setup import get_rag
@@ -13,11 +20,11 @@ def solve_prob_end2end(
     data_class: str,
     correct_solution: str,
     judging_llm: str,
-    coding_llm: str= None,
-    main_solver_llm: str= None,
+    coding_llm: str = None,
+    main_solver_llm: str = None,
     coding_max_attempt: int = 5,
     max_rejudge: int = 3,
-    use_rag = True,
+    use_rag=True,
     logging_level: str = logging.INFO,
 ):
     """
@@ -91,16 +98,26 @@ def solve_prob_end2end(
     # validate the correctness of the results, judge the correctness for max_rejudge times
     for _ in range(max_rejudge):
         try:
-            return judge_correctness(
-                prob=problem, sol=correct_solution, ans=main_solver_res, llm=judging_llm, logging_level=logging_level
-            ), fail_coding, fail_judging
+            return (
+                judge_correctness(
+                    prob=problem,
+                    sol=correct_solution,
+                    ans=main_solver_res,
+                    llm=judging_llm,
+                    logging_level=logging_level,
+                ),
+                fail_coding,
+                fail_judging,
+            )
         except ValueError:
             logging.warning("Invalid response from the judging LLM. Retrying...")
             continue
 
     fail_judging = True
     with open("failed_problems.txt", "a") as f:
-        f.write(f"Correct Solution: \n```{correct_solution}```\nLLM Response:\n```{main_solver_res}\n```\n====================\n")
+        f.write(
+            f"Correct Solution: \n```{correct_solution}```\nLLM Response:\n```{main_solver_res}\n```\n====================\n"
+        )
     logging.warning(
         f"Failed in judging correctness for problem for {max_rejudge} times. We will not count this problem."
     )
